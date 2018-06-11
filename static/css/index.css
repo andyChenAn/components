@@ -1,0 +1,24 @@
+.container a {
+    width: 33.3%;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    padding: 20px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #e4e4e4;
+    margin-top: -1px;
+    cursor: pointer;
+}
+.title {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin:20px;
+}
+em.backtop {
+    display: block;
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 5px;
+}
