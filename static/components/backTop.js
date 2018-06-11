@@ -10,11 +10,11 @@ class BackTop {
         this.element.addEventListener('click' , this.handle.bind(this));
     }
     handle (evt) {
-        
+        let top = document.documentElement.scrollTop;
     }
 };
 
 let backtop = new BackTop($('#backTop') , {
-    
+    animate : true
 });
 backtop.init();
