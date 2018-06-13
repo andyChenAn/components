@@ -3,11 +3,15 @@ class BackToTop {
         if (new.target !== BackToTop) {
             throw new Error('该类只能通过new来调用');
         };
+        if (!options) {
+            options = {};
+        };
         let defaults = {
             duration : 300,    // 所需时间
             before : function () {},    // 回到顶部开始运动前的回调
             after : function () {}      // 回到顶部运动结束后的回调
         };
+
         options = extend({} , defaults , options);
         this.element = element;
         this.options = options;
@@ -25,7 +29,7 @@ class BackToTop {
     }
     handle (evt) {
         this.flag = true;
-        let distance = document.documentElement.scrollTop;
+        let distance = document.body.scrollTop || document.documentElement.scrollTop;
         let duration = this.options.duration;
         let startTime = Date.now();
         let self = this;
@@ -38,7 +42,7 @@ class BackToTop {
         }
         let timerId = requestAnimationFrame(function step () {
             let p = Math.min(1 , (Date.now() - startTime) / duration);
-            document.documentElement.scrollTop = distance - distance * p * (2 - p);
+            document.body.scrollTop = document.documentElement.scrollTop = distance - distance * p * (2 - p);
             if (p < 1) {
                 requestAnimationFrame(step);
             } else {
@@ -49,7 +53,7 @@ class BackToTop {
         });
     }
     onSrcoll () {
-        let top = document.documentElement.scrollTop;
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
         let winH = window.innerHeight;
         // 自定义回到顶部按钮的效果
         if (top > winH) {
