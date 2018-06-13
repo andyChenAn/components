@@ -3,9 +3,6 @@ class BackToTop {
         if (new.target !== BackToTop) {
             throw new Error('该类只能通过new来调用');
         };
-        if (!options) {
-            options = {};
-        };
         let defaults = {
             duration : 300,    // 所需时间
             before : function () {},    // 回到顶部开始运动前的回调
