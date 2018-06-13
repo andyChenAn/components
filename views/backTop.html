@@ -7,17 +7,37 @@
     <title>回到顶部组件</title>
     <link rel="stylesheet" href="public/css/reset.css">
     <link rel="stylesheet" href="public/css/font.css">
-    <link rel="stylesheet" href="public/css/backTop.css">
+    <link rel="stylesheet" href="public/components/backTop/backTop.css">
     <script src="public/util/util.js"></script>
-    
+    <script src="public/components/backTop/backTop.js"></script>
 </head>
 <body>
-    <p>这里是顶部</p>
-    <div style="height: 2000px;width: 100%;"></div>
-    <p>这里是底部</p>
-    <div id="backTop" class="backtop-box">
-        <em class="iconfont icon-tubiao102 icon-backTop"></em>
-    </div>
-    <script src="public/components/backTop.js"></script>
+<p>这里是顶部</p>
+<div style="height: 2000px;width: 100%;"></div>
+<p>这里是底部</p>
+<div id="backTop" class="backtop-box">
+    <em class="iconfont icon-tubiao102 icon-backTop"></em>
+</div>
+<script>
+let backtop = new BackToTop($('#backTop') , {
+    duration : 300,
+    after : function () {
+        console.log('回到顶部'); 
+    },
+    before : function () {
+        console.log('开始回到顶部');
+    },
+    defaultIcon : function () {
+        this.element.style.display = 'none';
+    },
+    more : function () {
+        this.element.style.display = 'block';
+    },
+    less : function () {
+        this.element.style.display = 'none';
+    }
+});
+backtop.init();
+</script>
 </body>
 </html>

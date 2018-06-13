@@ -12,3 +12,9 @@
     font-size: 24px;
     color: #666;
 }
+.backtop {
+    transition: all 0.3s ease-in;
+    -webkit-transition: all 0.3s ease-in;
+    transform : translate3d(62px , 0 , 0);
+    -webkit-transform : translate3d(62px , 0 , 0);
+}
