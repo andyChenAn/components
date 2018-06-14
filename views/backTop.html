@@ -19,7 +19,7 @@
     <em class="iconfont icon-tubiao102 icon-backTop"></em>
 </div>
 <script>
-let backtop = new BackToTop($('#backTop') , {
+let backtop = new BackToTop(_.query('#backTop') , {
     duration : 300,
     after : function () {
         console.log('回到顶部'); 
@@ -37,7 +37,6 @@ let backtop = new BackToTop($('#backTop') , {
         this.element.style.display = 'none';
     }
 });
-backtop.init();
 </script>
 </body>
 </html>

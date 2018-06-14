@@ -7,21 +7,19 @@
 ### 案例演示：
 - 1、默认效果：实例化一个回到顶部对象，然后调用对象的init()方法即可。
 ```
-let backtop = new BackToTop($('#backTop'));
-backtop.init();
+let backtop = new BackToTop(_.query('#backTop'));
 ```
 - 2、自定义回到顶部的时长
 
 ```
-let backtop = new BackToTop($('#backTop') , {
+let backtop = new BackToTop(_.query('#backTop') , {
     duration : 300
 });
-backtop.init();
 ```
 - 3、自定义回到顶部过程中，按钮效果的展示
 
 ```
-let backtop = new BackToTop($('#backTop') , {
+let backtop = new BackToTop(_.query('#backTop') , {
     defaultIcon : function () {
         this.element.style.display = 'none';
     },
@@ -36,15 +34,14 @@ let backtop = new BackToTop($('#backTop') , {
 - 4、取消缓冲动画，直接回到顶部，其实就是将duration的值设置小点就行了
 
 ```
-let backtop = new BackToTop($('#backTop') , {
+let backtop = new BackToTop(_.query('#backTop') , {
     duration : 1
 });
-backtop.init();
 ```
 5、自定义点击回到顶部之前和之后的回调操作
 
 ```
-let backtop = new BackToTop($('#backTop') , {
+let backtop = new BackToTop(_.query('#backTop') , {
     after : function () {
         console.log('回到顶部'); 
     },
@@ -52,13 +49,11 @@ let backtop = new BackToTop($('#backTop') , {
         console.log('开始回到顶部');
     }
 });
-backtop.init();
 ```
 ### 调用方法：
 
 ```
-let backtop = new BackToTop(element , options);
-backtop.init();
+new BackToTop(element , options);
 ```
 #### options参数：
 
@@ -72,4 +67,9 @@ more | 无 | 否 | 自定义滚动条的高度大于屏幕时的回到顶部按�
 less | 无 | 否 | 自定义滚动条的高度小于屏幕时的回到顶部按钮的状态
 
 ### 问题：
-当我在手机上测试时，会发现有些浏览器在触发滚动事件的时候，只会在滚动结束后触发一次，并不会连续触发(比如：UC)，而有些浏览器则可以连续触发，一开始以为是自己写的代码哪里出了问题，结果在用手机打开京东页面，也发现了这样的问题。通过网上查找发现，当页面滚动时，会停止所有的事件响应及DOM操作引起的页面渲染，所以onscroll事件不能实时响应，只会在滚动结束后触发一次。解决的方式，可以使用touchmove事件，当手指滑动的时候触发该事件，去计算滚动条的高度，但是当手指离开屏幕时，也不会触发touchmove事件，所以还是不能实现实时响应。所以这里就不做任何处理，毕竟还是会触发滚动事件的。[问题参考](https://segmentfault.com/q/1010000004453730)
+1、当我在手机上测试时，会发现ios系统有些浏览器在触发滚动事件的时候，只会在滚动结束后触发一次（安卓系统没有问题），并不会连续触发(比如：UC)，而有些浏览器则可以连续触发，一开始以为是自己写的代码哪里出了问题，结果在用手机打开京东页面，也发现了这样的问题。通过网上查找发现，当页面滚动时，会停止所有的事件响应及DOM操作引起的页面渲染，所以onscroll事件不能实时响应，只会在滚动结束后触发一次。解决的方式，可以使用touchmove事件，当手指滑动的时候触发该事件，去计算滚动条的高度，但是当手指离开屏幕时，也不会触发touchmove事件，所以还是不能实现实时响应。所以这里就不做任何处理，毕竟还是会触发滚动事件的。[问题参考](https://segmentfault.com/q/1010000004453730)
+
+2、获取页面滚动条的高度存在兼容问题，在桌面的移动模式下，则使用"document.documentElement.scrollTop"，而在手机上则需要使用"document.body.scrollTop"，所以要想做到兼容的话，只需要这样写就可以了：
+```
+document.documentElement.scrollTop = document.body.scrollTop = 高度
+```
