@@ -4,22 +4,24 @@
 - 1、监听滚动事件来获取滚动条距离顶部的高度，当满足一定条件，显示"回到顶部"按钮
 - 2、点击事件的逻辑处理
 - 3、回到顶部过程中的缓冲动画的实现，当然也可以不添加动画，这里可以自定义
+### 介绍：
+通过原生JavaScript实现回到顶部组件，适应PC和移动，兼容到IE9+。
 ### 案例演示：
 - 1、默认效果：实例化一个回到顶部对象，然后调用对象的init()方法即可。
 ```
-let backtop = new BackToTop(_.query('#backTop'));
+var backtop = new BackToTop(_.query('#backTop'));
 ```
 - 2、自定义回到顶部的时长
 
 ```
-let backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(_.query('#backTop') , {
     duration : 300
 });
 ```
 - 3、自定义回到顶部过程中，按钮效果的展示
 
 ```
-let backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(_.query('#backTop') , {
     defaultIcon : function () {
         this.element.style.display = 'none';
     },
@@ -34,14 +36,14 @@ let backtop = new BackToTop(_.query('#backTop') , {
 - 4、取消缓冲动画，直接回到顶部，其实就是将duration的值设置小点就行了
 
 ```
-let backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(_.query('#backTop') , {
     duration : 1
 });
 ```
 5、自定义点击回到顶部之前和之后的回调操作
 
 ```
-let backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(_.query('#backTop') , {
     after : function () {
         console.log('回到顶部'); 
     },
@@ -73,3 +75,6 @@ less | 无 | 否 | 自定义滚动条的高度小于屏幕时的回到顶部按�
 ```
 document.documentElement.scrollTop = document.body.scrollTop = 高度
 ```
+3、兼容问题
+- 1、requestAnimationFrame和cancelAnimationFrame，这两个方法只能在IE10以上兼容，IE9及以下是不兼容的，那么就得写兼容代码
+- 2、函数的bind方法在IE8下是不支持的，所以需要做兼容，这个暂时还没有做，当然还有其他兼容问题，有空会一一去看一下，不如目标是兼容到IE8
