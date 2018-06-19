@@ -12,6 +12,9 @@ app.get('/' , (req , res) => {
 app.get('/backTop' , (req , res) => {
     res.render('./backTop.html');
 });
+app.get('/slider' , (req , res) => {
+    res.render('./slider.html');
+});
 
 app.listen('3000' , () => {
     console.log('listening port on 3000');
