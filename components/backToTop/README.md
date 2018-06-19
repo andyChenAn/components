@@ -9,19 +9,19 @@
 ### 案例演示：
 - 1、默认效果：实例化一个回到顶部对象。
 ```
-var backtop = new BackToTop(_.query('#backTop'));
+var backtop = new BackToTop(element);
 ```
 - 2、自定义回到顶部的时长
 
 ```
-var backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(element , {
     duration : 300
 });
 ```
 - 3、自定义回到顶部过程中，按钮效果的展示
 
 ```
-var backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(element , {
     defaultIcon : function () {
         this.element.style.display = 'none';
     },
@@ -36,14 +36,14 @@ var backtop = new BackToTop(_.query('#backTop') , {
 - 4、取消缓冲动画，直接回到顶部，其实就是将duration的值设置小点就行了
 
 ```
-var backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(element , {
     duration : 1
 });
 ```
 5、自定义点击回到顶部之前和之后的回调操作
 
 ```
-var backtop = new BackToTop(_.query('#backTop') , {
+var backtop = new BackToTop(element , {
     after : function () {
         console.log('回到顶部'); 
     },
