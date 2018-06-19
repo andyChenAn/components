@@ -3,13 +3,6 @@
             || (typeof global == 'object' && global.global == global && global)
             || this || {};
     var _ = {
-        query : function (attr) {
-            if (attr.indexOf('#') > -1) {
-                return document.querySelector(attr);
-            } else {
-                return document.querySelectorAll(attr);
-            }
-        },
         extend : function () {
             var args = [].slice.call(arguments);
             if (args.length == 0) {

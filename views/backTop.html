@@ -19,22 +19,14 @@
     <em class="iconfont icon-tubiao102 icon-backTop"></em>
 </div>
 <script>
-var backtop = new BackToTop(_.query('#backTop') , {
+var ele = document.getElementById('backTop');
+var backtop = new BackToTop(ele , {
     duration : 300,
     after : function () {
         console.log('回到顶部'); 
     },
     before : function () {
         console.log('开始回到顶部');
-    },
-    defaultIcon : function () {
-        this.element.style.display = 'none';
-    },
-    more : function () {
-        this.element.style.display = 'block';
-    },
-    less : function () {
-        this.element.style.display = 'none';
     }
 });
 </script>

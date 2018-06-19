@@ -5,7 +5,7 @@
 - 2、点击事件的逻辑处理
 - 3、回到顶部过程中的缓冲动画的实现，当然也可以不添加动画，这里可以自定义
 ### 介绍：
-通过原生JavaScript实现回到顶部组件，适应PC和移动，兼容到IE9+。
+通过原生JavaScript实现回到顶部组件，适应PC和移动，兼容到IE8+。
 ### 案例演示：
 - 1、默认效果：实例化一个回到顶部对象，然后调用对象的init()方法即可。
 ```
@@ -77,4 +77,7 @@ document.documentElement.scrollTop = document.body.scrollTop = 高度
 ```
 3、兼容问题
 - 1、requestAnimationFrame和cancelAnimationFrame，这两个方法只能在IE10以上兼容，IE9及以下是不兼容的，那么就得写兼容代码
-- 2、函数的bind方法在IE8下是不支持的，所以需要做兼容，这个暂时还没有做，当然还有其他兼容问题，有空会一一去看一下，不如目标是兼容到IE8
+- 2、函数的bind方法在IE8下的兼容问题
+- 3、IE8浏览器下的css属性opacity是不支持的，需要使用"filter:alpha(opacity=60)"来兼容
+- 4、IE8浏览器下不支持addEventListener方法来绑定事件，需要使用attachEvent来给元素绑定事件
+- 5、IE8浏览器是不支持window.innerHeight来获取页面高度，需要使用document.documentElement.clientHeight来回去可视区域的高度

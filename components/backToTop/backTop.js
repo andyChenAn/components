@@ -3,6 +3,7 @@
                 || (typeof global == 'object' && global.global == global && global)
                 || this
                 || {};
+    // 兼容requestAnimationFrame和cancelAnimationFrame
     var requestAnimationFrame = (function () {
         return  window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
@@ -16,13 +17,48 @@
         return  window.cancelAnimationFrame ||
                 window.webkitCancelAnimationFrame ||
                 window.mozCancelAnimationFrame ||
-                function () {
+                function (id) {
                     clearTimeout(id);
                 }
     })();
-    var cancelAnimationFrame = window.cancelAnimationFrame || function (id) {
-        clearTimeout(id);
-    }
+    // 兼容函数的bind方法，在IE8及以下浏览器是不支持bind方法
+    Function.prototype.bind = Function.prototype.bind || function (context) {
+        var args = Array.prototype.slice.call(arguments , 1);
+        var self = this;
+        var noop = function () {};
+        var bound = function () {
+            var bindArgs = Array.prototype.slice.call(arguments);
+            return self.apply(this instanceof noop ? this : context , args.concat(bindArgs));
+        }
+        noop.prototype = this.prototype;
+        bound.prototype = new noop();
+        return bound;
+    };
+    // 兼容事件绑定方法addEventListener
+    var eventUtils = {
+        addEvents : function (element , type , handler) {
+            if (window.addEventListener) {
+                element.addEventListener(type , handler);
+            } else {
+                element.attachEvent('on' + type , handler);
+            }
+        },
+        removeEvents : function (element , type , handler) {
+            if (window.removeEventListener) {
+                if (handler) {
+                    element.removeEventListener(type , handler);
+                } else {
+                    element.removeEventListener(type);
+                }
+            } else {
+                if (handler) {
+                    element.detachEvent('on' + type , handler);
+                } else {
+                    element.detachEvent('on' + type);
+                }
+            }
+        }
+    };
     function BackToTop (element , options) {
         if (!options) {
             options = {};
@@ -46,8 +82,8 @@
         } else {
             this.defaultIcon();
         }
-        this.element.addEventListener('click' , this.handle.bind(this) , false);
-        window.addEventListener('scroll' , this.onSrcoll.bind(this) , false);
+        eventUtils.addEvents(this.element , 'click' , this.handle.bind(this));
+        eventUtils.addEvents(window , 'scroll' , this.onSrcoll.bind(this));
     };
     proto.handle = function (evt) {
         this.flag = true;
@@ -76,7 +112,7 @@
     };
     proto.onSrcoll = function () {
         var top = document.body.scrollTop || document.documentElement.scrollTop;
-        var winH = window.innerHeight;
+        var winH = window.innerHeight || document.documentElement.clientHeight;
         // 自定义回到顶部按钮的效果
         if (top > winH) {
             if (!this.flag) {
@@ -95,13 +131,21 @@
         }
     };
     proto.handleIcon = function (offset , opacity) {
-        this.element.style.transition = 'all 0.3s ease-in-out';
-        this.element.style.transform = 'translate3d('+offset+'px , 0 , 0)';
-        this.element.style.opacity = opacity;
+        if (window.addEventListener) {
+            this.element.style.opacity = opacity;
+            this.element.style.transition = 'all 0.3s ease-in-out';
+            this.element.style.transform = 'translate3d('+offset+'px , 0 , 0)';
+        } else {
+            this.element.style.filter = 'alpha(opacity='+ opacity * 100 +')';
+        }
     }
     proto.defaultIcon = function () {
-        this.element.style.transform = 'translate3d(65px , 0 , 0)';
-        this.element.style.opacity = 0;
+        if (window.addEventListener) {
+            this.element.style.opacity = 0;
+            this.element.style.transform = 'translate3d(65px , 0 , 0)';
+        } else {
+            this.element.style.filter = 'alpha(opacity=0)';
+        }
     };
     if (typeof exports != 'undefined' && !exports.nodeType) {
         if (typeof module != 'undefined' && !module.nodeType && module.exports) {
