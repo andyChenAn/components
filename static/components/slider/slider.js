@@ -50,7 +50,6 @@
         this.options = _.extend({} , defaults , options);
         this.opt = {};
         this.index = 0;
-        this.isTouch = false;
         this.init();
     };
     var proto = Slider.prototype;
@@ -65,19 +64,19 @@
         // 事件绑定
         this.bindEvents();
         // 自动播放
-        this.play();
+        if (this.options.autoPlay) {
+            this.play();
+        };
     };
     proto.play = function () {
         const self = this;
-        if (this.options.autoPlay) {
-            this.opt.timerId = setInterval(function () {
-                if (!self.isTouch) {
-                    self.autoPlay();
-                } else {
-                    clearInterval(self.opt.timerId);
-                }
-            } , 2000)
-        }
+        clearInterval(this.opt.timerId);
+        this.opt.timerId = setInterval(function () {
+            self.autoPlay();
+        } , 2000)
+    };
+    proto.stop = function () {
+        clearInterval(this.opt.timerId);
     };
     proto.computeStyle = function () {
         var self = this;
@@ -143,7 +142,7 @@
         var touch = evt.changedTouches[0];
         this.opt.startX = touch.pageX;
         this.opt.startY = touch.pageY;
-        this.isTouch = true;
+        this.stop();
     };
     // touchmove事件处理
     proto.onTouchmove = function (evt) {
@@ -198,6 +197,7 @@
         } else {
             this.setTransitionBack();
         };
+        this.play();
     };
     proto.setDotActive = function () {
         for (var i = 0 ; i < this.opt.dots.length ; i++) {
