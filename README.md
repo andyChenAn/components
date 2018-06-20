@@ -1,4 +1,5 @@
 # components
-移动端组件集合，主要是对自己在公司开发过的组件做一个总结（实现代码并非完全一样）。同时自己在写组件的时候，也会需要一些工具方法，这些也都可以自己去尝试写一遍，形成一套完整的组件集合，今后需要使用的话，可以直接拿过来用，并且不依赖任何库或框架。当然自己能力有限，可能也会存在bug，写的不好，还望大家多多提醒。
+前端组件集合，主要是通过造轮子来巩固自己的基础知识。
 ### 目录
 - [回到顶部组件](https://github.com/andyChenAn/components/blob/master/components/backToTop)
+- [图片轮播](https://github.com/andyChenAn/components/blob/master/components/slider)

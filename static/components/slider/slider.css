@@ -11,4 +11,25 @@
 }
 .slider-li {
     float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.dot-container {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    z-index: 3;
+}
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    margin: 0 5px;
+    display: inline-block;
+}
+.active {
+    background-color: #fff;
 }
