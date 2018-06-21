@@ -2,43 +2,6 @@
     var root = (typeof self == 'object' && self.self == self && self) ||
                 (typeof global == 'object' && global.global == global && global) ||
                 this || {};
-    // 兼容函数的bind方法，IE8不支持
-    Function.prototype.bind = Function.prototype.bind || function (context) {
-        var args = Array.prototype.slice.call(arguments , 1);
-        var self = this;
-        var noop = function (){};
-        var bound = function () {
-            var bindArgs = Array.prototype.slice.call(arguments);
-            self.apply(this instanceof bound ? this : context , args.concat(bindArgs));
-        };
-        noop.prototype = this.prototype;
-        bound.prototype = new noop();
-        return bound;
-    };
-    var EventUtil = {
-        addEvent : function (element , type , handler) {
-            if (window.addEventListener) {
-                element.addEventListener(type , handler);
-            } else {
-                element.attachEvent('on' + type , handler);
-            }
-        },
-        removeEvent : function (element , type , handler) {
-            if (window.removeEventListener) {
-                if (handler) {
-                    element.removeEventListener(type , handler)
-                } else {
-                    element.removeEventListener(type);
-                }
-            } else {
-                if (handler) {
-                    element.detachEvent('on' + type , handler)
-                } else {
-                    element.detachEvent('on' + type);
-                }
-            }
-        }
-    };
     function Slider (element , options) {
         if (!(this instanceof Slider)) {
             return new Slider(element , options);
@@ -57,7 +20,6 @@
     };
     var proto = Slider.prototype;
     proto.init = function () {
-        const self = this;
         // 计算样式
         this.computeStyle();
         // 显示小圆圈
@@ -83,7 +45,9 @@
     };
     proto.computeStyle = function () {
         var self = this;
-        this.opt.winW = window.innerWidth;
+        var oStyle = window.getComputedStyle(this.element) || this.currentStyle();
+        var w = parseInt(oStyle.maxWidth);
+        this.opt.winW = window.innerWidth > w ? w : window.innerWidth;
         this.opt.images = document.getElementsByClassName('slider-image');
         this.opt.sliderBox = document.getElementsByClassName('slider-list')[0];
         this.opt.sliderList = document.getElementsByClassName('slider-li');
@@ -131,13 +95,9 @@
     };
     // 初始化事件绑定
     proto.bindEvents = function () {
-        if (this.options.platform == 'mobile') {
-            this.element.addEventListener('touchstart' , this.onTouchstart.bind(this));
-            this.element.addEventListener('touchmove' , this.onTouchmove.bind(this));
-            this.element.addEventListener('touchend' , this.onTouchend.bind(this));
-        } else if (this.options.platform == 'pc') {
-            
-        }
+        this.element.addEventListener('touchstart' , this.onTouchstart.bind(this));
+        this.element.addEventListener('touchmove' , this.onTouchmove.bind(this));
+        this.element.addEventListener('touchend' , this.onTouchend.bind(this));
     };
     // touchstart事件处理
     proto.onTouchstart = function (evt) {
@@ -204,6 +164,7 @@
             this.play();
         }
     };
+    // 标记当前图片对应的小红点
     proto.setDotActive = function () {
         for (var i = 0 ; i < this.opt.dots.length ; i++) {
             var dot = this.opt.dots[i];
@@ -214,6 +175,7 @@
         };
         this.opt.dots[this.index].classList.add('active');
     };
+    // 当滑动图片距离没有超过屏幕的1/5时，图片回到原来位置
     proto.setTransitionBack = function () {
         var winW = this.opt.winW;
         var currentSlider = this.opt.sliderList[this.index];
@@ -224,6 +186,7 @@
         nextSlider.style.transform = 'translate3d('+ winW +'px , 0 , 0)';
         prevSlider.style.transform = 'translate3d('+ (-winW) +'px , 0 , 0)';
     };
+    // 当触发touchmove事件时，图片跟随手指滑动
     proto.setTransform = function (offset) {
         var winW = this.opt.winW;
         if (this.index == this.opt.images.length - 1) {
@@ -240,6 +203,7 @@
         nextSlider.style.transform = 'translate3d('+ (winW + offset) +'px , 0 , 0)';
         prevSlider.style.transform = 'translate3d('+ (offset - winW) +'px , 0 , 0)';
     };
+    // 设置图片的切换效果
     proto.setTransition = function () {
         var winW = this.opt.winW;
         if (this.opt.offset < 0) {
@@ -248,6 +212,7 @@
             this.slideLeft();
         }
     };
+    // 手指右滑时，图片的切换效果
     proto.slideRight = function () {
         var winW = this.opt.winW;
         if (this.index == this.opt.images.length - 1) {
@@ -274,6 +239,7 @@
         nextSlider.style.transform = 'translate3d(0 , 0 , 0)';
         prevSlider.style.transform = 'translate3d('+ (winW) +'px , 0 , 0)';
     };
+    // 手指左滑时，图片的切换效果
     proto.slideLeft = function () {
         var winW = this.opt.winW;
         if (this.index == 0) {
@@ -292,6 +258,7 @@
         nextSlider.style.transform = 'translate3d('+0+'px , 0 , 0)';
         prevSlider.style.transform = 'translate3d('+ winW +'px , 0 , 0)';
     };
+    // 自动播放效果
     proto.autoPlay = function () {
         if (this.options.lazy) {
             if ((this.index + 1) < this.opt.images.length) {

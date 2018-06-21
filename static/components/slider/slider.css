@@ -1,5 +1,6 @@
 .slide-container {
     width: 100%;
+    max-width: 640px;
     height: auto;
     overflow: hidden;
     position: relative;

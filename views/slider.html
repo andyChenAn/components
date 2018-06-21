@@ -12,7 +12,8 @@
     <script src="public/components/slider/slider.js"></script>
 </head>
 <body>
-<div class="slide-container" id="slider">
+<h3 style="text-align: center;padding: 20px;">移动端轮播图组件</h3>
+<div class="slide-container" id="slider" style="margin: 0 auto">
     <ul class="slider-list">
         <li class="slider-li">
             <img src="public/image/slider1.jpg" class="slider-image" alt="">
@@ -39,16 +40,14 @@
             <img _src="public/image/slider8.jpg" class="slider-image" alt="">
         </li>
     </ul>
-
 </div>
 
 <script>
 var slider = document.getElementById('slider');
 Slider(slider , {
-    platform : 'mobile',   // mobile or pc
     lazy : true,
     dot : true,
-    autoPlay : false
+    autoPlay : true
 });
 </script>
 
