@@ -49,14 +49,12 @@ html代码：
 js代码：
 var slider = document.getElementById('slider');
 Slider(slider , {
-    platform : 'mobile', 
     lazy : true
 });
 ```
 - 2、轮播图自动播放，只要将options对象的autoPlay属性设置为true即可。
 ```
 new Slider(element , {
-    platform : 'mobile', 
     lazy : true,
     autoPlay : true
 });
@@ -98,7 +96,6 @@ html代码：
 ```
 js代码：
 new Slider(element , {
-    platform : 'mobile', 
     lazy : false
 });
 ```
