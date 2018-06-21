@@ -165,7 +165,7 @@
                     if (src) {
                         self.images[self.index + 1].setAttribute('src' , src);
                         self.images[self.index + 1].removeAttribute('_src');
-                    }
+                    };
                 }
             }
         };
