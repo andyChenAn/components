@@ -15,6 +15,9 @@ app.get('/backTop' , (req , res) => {
 app.get('/slider' , (req , res) => {
     res.render('./slider.html');
 });
+app.get('/carousel' , (req , res) => {
+    res.render('./carousel.html');
+});
 
 app.listen('3000' , () => {
     console.log('listening port on 3000');

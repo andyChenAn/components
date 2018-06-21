@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>轮播图组件</title>
+    <link rel="stylesheet" href="public/css/reset.css">
+    <link rel="stylesheet" href="public/components/carousel/carousel.css">
+    <script src="public/util/util.js"></script>
+    <script src="public/components/carousel/carousel.js"></script>
+</head>
+<body>
+<div class="container" id="carousel">
+    <ul class="carousel-list">
+        <li class="carousel-li">
+            <img src="public/image/slider1.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img src="public/image/slider2.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img _src="public/image/slider3.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img _src="public/image/slider4.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img _src="public/image/slider5.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img _src="public/image/slider6.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img _src="public/image/slider7.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img src="public/image/slider8.jpg" class="carousel-image" alt="">
+        </li>
+    </ul>
+</div>
+<script>
+var carousel = document.getElementById('carousel');
+new Carousel(carousel , {
+    lazy : true,
+    dot : true,
+    time : 25
+});
+</script>
+</body>
+</html>

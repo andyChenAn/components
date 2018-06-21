@@ -1,0 +1,65 @@
+.container {
+    width: 640px;
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto;
+}
+.carousel-image {
+    width: 100%;
+}
+.carousel-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.carousel-li {
+    float: left;
+}
+.dot-container {
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+}
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    display: inline-block;
+    margin: 0 4px;
+}
+.prev {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 24px;
+    height: 40px;
+    margin-top: -20px;
+    line-height: 40px;
+    background-color: rgba(0,0,0,.2);
+    color: rgba(255,255,255,.5);
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+.next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 24px;
+    height: 40px;
+    margin-top: -20px;
+    line-height: 40px;
+    background-color: rgba(0,0,0,.2);
+    color: rgba(255,255,255,.5);
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+.prev:hover , .next:hover {
+    background-color: rgba(0,0,0,.5);
+}
+.active {
+    background-color: #fff;
+}
