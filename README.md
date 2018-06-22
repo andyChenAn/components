@@ -3,3 +3,4 @@
 ### 目录
 - [回到顶部组件](https://github.com/andyChenAn/components/blob/master/components/backToTop)
 - [图片轮播组件(移动端)](https://github.com/andyChenAn/components/blob/master/components/slider)
+- [图片轮播组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/carousel)
