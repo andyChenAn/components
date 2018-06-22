@@ -69,7 +69,7 @@
         this.list = document.getElementsByClassName('carousel-list')[0];
         this.images = document.getElementsByClassName('carousel-image');
         this.index = 0;
-        this.timer = null;
+        this.doAnimate = false;
         this.init();
     };
     Carousel.prototype.init = function () {
@@ -81,8 +81,6 @@
         this.bindEvents();
     };
     Carousel.prototype.render = function () {
-        var fragDoc = document.createDocumentFragment();
-        var div = document.createElement('div');
         var prev = document.createElement('span');
         var next = document.createElement('span');
         prev.className = 'prev';
@@ -91,22 +89,28 @@
         next.id = 'next';
         prev.innerText = '<';
         next.innerText = '>';
-        div.className = 'dot-container';
-        fragDoc.appendChild(div);
-        for (var i = 0 ; i < this.lis.length ; i++) {
-            var span = document.createElement('span');
-            if (i == 0) {
-                span.className = 'dot active';
-            } else {
-                span.className = 'dot';
-            }
-            div.appendChild(span);
-        };
-        this.target.appendChild(fragDoc);
+        if (this.options.dot) {
+            var fragDoc = document.createDocumentFragment();
+            var div = document.createElement('div');
+            div.className = 'dot-container';
+            fragDoc.appendChild(div);
+            for (var i = 0 ; i < this.lis.length ; i++) {
+                var span = document.createElement('span');
+                if (i == 0) {
+                    span.className = 'dot active';
+                } else {
+                    span.className = 'dot';
+                }
+                div.appendChild(span);
+            };
+            this.target.appendChild(fragDoc);
+            this.dots = document.getElementsByClassName('dot');
+        }
         this.target.appendChild(prev);
         this.target.appendChild(next);
         this.prev = document.getElementById('prev');
         this.next = document.getElementById('next');
+        
         if (this.options.loop) {
             var firstChild = this.list.firstElementChild;
             var lastChild = this.list.lastElementChild;
@@ -144,49 +148,87 @@
         eventUtil.addEvent(this.next , 'click' , this.nextHandler.bind(this));
     };
     Carousel.prototype.prevHandler = function () {
-        var offset = parseInt(this.images[0].style.width);
-        if (this.options.loop) {
-            if (this.index == 0) {
-                this.index = this.lis.length - 1 - 2;
-            } else {
-                this.index -= 1;
-            }
-            this.animate(offset);
-        } else {
-            if (this.index == 0) {
-                this.index = this.lis.length - 1;
-                this.animate(-this.index * offset);
-            } else {
-                this.index -= 1;
-                this.animate(offset);
+        if (this.options.effect == 'slide') {
+            if (this.doAnimate) {
+                return;
             };
-        };
+            if (typeof this.options.onChangeStart == 'function') {
+                this.options.onChangeStart.call(this);
+            };
+            var offset = parseInt(this.images[0].style.width);
+            if (this.options.loop) {
+                if (this.index == 0) {
+                    this.index = this.lis.length - 1 - 2;
+                } else {
+                    this.index -= 1;
+                }
+                this.animate(offset);
+                if (this.options.dot) {
+                    this.showDot();
+                }
+            } else {
+                if (this.index == 0) {
+                    this.index = this.lis.length - 1;
+                    this.animate(-this.index * offset);
+                    if (this.options.dot) {
+                        this.showDot();
+                    }
+                } else {
+                    this.index -= 1;
+                    this.animate(offset);
+                    if (this.options.dot) {
+                        this.showDot();
+                    }
+                };
+            };
+        } else if (this.options.effect == 'fade') {
+            
+        }
     };
     Carousel.prototype.nextHandler = function () {
-        var offset = parseInt(this.images[0].style.width);
-        if (this.options.loop) {
-            if (this.index == this.lis.length - 1 - 2) {
-                this.index = 0;
-            } else {
-                this.index += 1;
-            }
-            this.animate(-offset);
-        } else {
-            if (this.index == this.lis.length - 1) {
-                this.index = 0;
-                this.animate(-parseInt(this.list.style.left));
-            } else {
-                this.index += 1;
-                this.animate(-offset);
+        if (this.options.effect == 'slide') {
+            if (this.doAnimate) {
+                return;
             };
+            if (typeof this.options.onChangeStart == 'function') {
+                this.options.onChangeStart.call(this);
+            };
+            var offset = parseInt(this.images[0].style.width);
+            if (this.options.loop) {
+                if (this.index == this.lis.length - 1 - 2) {
+                    this.index = 0;
+                } else {
+                    this.index += 1;
+                }
+                this.animate(-offset);
+                if (this.options.dot) {
+                    this.showDot();
+                }
+            } else {
+                if (this.index == this.lis.length - 1) {
+                    this.index = 0;
+                    this.animate(-parseInt(this.list.style.left));
+                    if (this.options.dot) {
+                        this.showDot();
+                    }
+                } else {
+                    this.index += 1;
+                    this.animate(-offset);
+                    if (this.options.dot) {
+                        this.showDot();
+                    }
+                };
+            }
+        } else if (this.options.effect == 'fade') {
+
         }
     };
     Carousel.prototype.animate = function (offset) {
+        this.doAnimate = true;
         if (this.options.animate) {
             var time = this.options.time;
             var speed = offset / time;
             var left = parseInt(this.list.style.left) + offset;
-            console.log(left);
             var self = this;
             var len = this.lis.length;
             var move = function () {
@@ -202,7 +244,27 @@
                         if (speed > 0 && left > -offset) {
                             self.list.style.left = -offset * (len - 2) + 'px';
                         }
-                    }
+                    };
+                    if (typeof self.options.onChangeEnd == 'function') {
+                        self.options.onChangeEnd.call(self);
+                    };
+                    // 图片懒加载，只有当无缝轮播且需要懒加载的时候，才选择图片懒加载方式
+                    if (self.options.loop && self.options.lazy) {
+                        if (self.index + 1 < len && speed < 0) {
+                            var src = self.images[self.index + 2].getAttribute('_src');
+                            if (src) {
+                                self.images[self.index + 2].setAttribute('src' , src);
+                                self.images[self.index + 2].removeAttribute('_src');
+                            };
+                        } else if (self.index > 1 && speed > 0) {
+                            var src = self.images[self.index].getAttribute('_src');
+                            if (src) {
+                                self.images[self.index].setAttribute('src' , src);
+                                self.images[self.index].removeAttribute('_src');
+                            };
+                        }
+                    };
+                    self.doAnimate = false;
                 }
             }
             move();
@@ -213,17 +275,15 @@
                 this.list.style.left = -offset * this.index + 'px';
             }
         }
-        // 图片懒加载
-        // if (this.index > 0) {
-        //     var src = this.images[this.index + 1].getAttribute('_src');
-        //     if (src) {
-        //         this.images[this.index + 1].setAttribute('src' , src);
-        //         this.images[this.index + 1].removeAttribute('_src');
-        //     };
-        // }
     };
-    Carousel.prototype.back = function (offset) {
-        console.log(offset);
-    }
+    Carousel.prototype.showDot = function () {
+        for (var i = 0 ; i < this.dots.length ; i++) {
+            if (this.dots[i].classList.contains('active')) {
+                this.dots[i].classList.remove('active');
+                break;
+            }
+        };
+        this.dots[this.index].classList.add('active');
+    };
     root.Carousel = Carousel;
 })();

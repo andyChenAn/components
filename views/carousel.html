@@ -10,6 +10,7 @@
     <script src="public/components/carousel/carousel.js"></script>
 </head>
 <body>
+<h3 style="padding: 20px;text-align: center;font-size: 24px;">PC版图片轮播组件</h3>
 <div class="container" id="carousel">
     <ul class="carousel-list">
         <li class="carousel-li">
@@ -45,7 +46,14 @@ new Carousel(carousel , {
     dot : true,
     time : 20,
     animate : true,
-    loop : true
+    loop : true,
+    effect : 'slide',   //slide or fade
+    onChangeStart : function () {
+        console.log('移动前执行');
+    },
+    onChangeEnd : function () {
+        console.log('移动后执行');
+    }
 });
 </script>
 </body>
