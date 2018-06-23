@@ -20,6 +20,7 @@
     bottom: 10px;
     text-align: center;
     width: 100%;
+    z-index: 2;
 }
 .dot {
     width: 6px;
@@ -42,6 +43,7 @@
     font-size: 20px;
     cursor: pointer;
     text-align: center;
+    z-index: 2;
 }
 .next {
     position: absolute;
@@ -56,6 +58,7 @@
     font-size: 20px;
     cursor: pointer;
     text-align: center;
+    z-index: 2;
 }
 .prev:hover , .next:hover {
     background-color: rgba(0,0,0,.5);

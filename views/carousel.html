@@ -42,12 +42,14 @@
 <script>
 var carousel = document.getElementById('carousel');
 new Carousel(carousel , {
-    lazy : true,
+    lazy : false,
     dot : true,
     time : 20,
     animate : true,
     loop : true,
     effect : 'slide',   //slide or fade
+    autoPlay : false,
+    interval : 2000,
     onChangeStart : function () {
         console.log('移动前执行');
     },

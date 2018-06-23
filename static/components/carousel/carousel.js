@@ -61,7 +61,15 @@
     function Carousel (element , options) {
         var defaults = {
             lazy : true,
-            dot : true
+            dot : true,
+            interval : 2000,
+            autoPlay : true,
+            animate : true,
+            time : 20,
+            loop : true,
+            effect : 'slide',
+            onChangeStart : function () {},
+            onChangeEnd : function () {}
         };
         this.options = _.extend({} , defaults , options);
         this.target = element;
@@ -70,6 +78,7 @@
         this.images = document.getElementsByClassName('carousel-image');
         this.index = 0;
         this.doAnimate = false;
+        this.timerId = null;
         this.init();
     };
     Carousel.prototype.init = function () {
@@ -79,6 +88,10 @@
         this.compute();
         // 绑定事件
         this.bindEvents();
+        // 自动播放
+        if (this.options.autoPlay) {
+            this.play();
+        }
     };
     Carousel.prototype.render = function () {
         var prev = document.createElement('span');
@@ -110,8 +123,7 @@
         this.target.appendChild(next);
         this.prev = document.getElementById('prev');
         this.next = document.getElementById('next');
-        
-        if (this.options.loop) {
+        if (this.options.loop && this.options.effect == 'slide') {
             var firstChild = this.list.firstElementChild;
             var lastChild = this.list.lastElementChild;
             var cloneFirstChild = firstChild.cloneNode(true);
@@ -129,23 +141,47 @@
             var imageH = parseInt(style.height);
             self.target.style.height = imageH + 'px';
             self.list.style.height = imageH + 'px';
-            self.list.style.width = self.lis.length * imageW + 'px';
-            if (self.options.loop) {
-                self.list.style.left = -imageW + 'px';
-            } else {
-                self.list.style.left = 0;
+            if (self.options.effect == 'slide') {
+                self.list.style.width = self.lis.length * imageW + 'px';
+                if (self.options.loop) {
+                    self.list.style.left = -imageW + 'px';
+                } else {
+                    self.list.style.left = 0;
+                }
+            } else if (self.options.effect == 'fade') {
+                self.list.style.top = 0;
+                self.list.style.width = imageW + 'px';
+                self.list.style.height = imageH + 'px';
             }
             for (var i = 0 ; i < self.lis.length ; i++) {
                 self.lis[i].style.height = imageH + 'px';
                 self.lis[i].style.width = imageW + 'px';
                 self.images[i].style.width = imageW + 'px';
                 self.images[i].style.height = imageH + 'px';
+                if (self.options.effect == 'fade') {
+                    if (i == 0) {
+                        self.lis[i].style.zIndex = 1;
+                        self.lis[i].style.opacity = 1;
+                    } else {
+                        self.lis[i].style.zIndex = 0;
+                        self.lis[i].style.opacity = 0;
+                    };
+                    self.lis[i].style.position = 'absolute';
+                    self.lis[i].style.top = 0;
+                    self.lis[i].style.left = 0;
+                    
+                }
             }
         };
     };
     Carousel.prototype.bindEvents = function () {
         eventUtil.addEvent(this.prev , 'click' , this.prevHandler.bind(this));
         eventUtil.addEvent(this.next , 'click' , this.nextHandler.bind(this));
+        // 只有当开启自动播放的时候，才需要注册这两个事件
+        if (this.options.autoPlay) {
+            eventUtil.addEvent(this.target , 'mouseover' , this.onMouseover.bind(this));
+            eventUtil.addEvent(this.target , 'mouseout' , this.onMouseout.bind(this));
+        }
     };
     Carousel.prototype.prevHandler = function () {
         if (this.options.effect == 'slide') {
@@ -182,7 +218,15 @@
                 };
             };
         } else if (this.options.effect == 'fade') {
-            
+            if (this.index == 0) {
+                this.index = this.lis.length - 1;
+            } else {
+                this.index -= 1;
+            };
+            this.fade();
+            if (this.options.dot) {
+                this.showDot();
+            }
         }
     };
     Carousel.prototype.nextHandler = function () {
@@ -220,60 +264,95 @@
                 };
             }
         } else if (this.options.effect == 'fade') {
-
+            if (this.index == this.lis.length - 1) {
+                this.index = 0;
+            } else {
+                this.index += 1;
+            };
+            this.fade();
+            if (this.options.dot) {
+                this.showDot();
+            }
         }
     };
     Carousel.prototype.animate = function (offset) {
         this.doAnimate = true;
-        if (this.options.animate) {
-            var time = this.options.time;
-            var speed = offset / time;
-            var left = parseInt(this.list.style.left) + offset;
-            var self = this;
-            var len = this.lis.length;
-            var move = function () {
-                self.list.style.left = parseInt(self.list.style.left) + speed + 'px';
-                if (speed < 0 && parseInt(self.list.style.left) > left || speed > 0 && parseInt(self.list.style.left) < left) {
-                    requestAnimationFrame(move);
-                } else {
-                    self.list.style.left = left + 'px';
-                    if (self.options.loop) {
-                        if (speed < 0 && left < (len - 2) * offset) {
-                            self.list.style.left = offset + 'px';
+        if (this.options.effect == 'slide') {
+            if (this.options.animate) {
+                var time = this.options.time;
+                var speed = offset / time;
+                var left = parseInt(this.list.style.left) + offset;
+                var self = this;
+                var len = this.lis.length;
+                var move = function () {
+                    self.list.style.left = parseInt(self.list.style.left) + speed + 'px';
+                    if (speed < 0 && parseInt(self.list.style.left) > left || speed > 0 && parseInt(self.list.style.left) < left) {
+                        requestAnimationFrame(move);
+                    } else {
+                        self.list.style.left = left + 'px';
+                        if (self.options.loop) {
+                            if (speed < 0 && left < (len - 2) * offset) {
+                                self.list.style.left = offset + 'px';
+                            };
+                            if (speed > 0 && left > -offset) {
+                                self.list.style.left = -offset * (len - 2) + 'px';
+                            }
                         };
-                        if (speed > 0 && left > -offset) {
-                            self.list.style.left = -offset * (len - 2) + 'px';
-                        }
-                    };
-                    if (typeof self.options.onChangeEnd == 'function') {
-                        self.options.onChangeEnd.call(self);
-                    };
-                    // 图片懒加载，只有当无缝轮播且需要懒加载的时候，才选择图片懒加载方式
-                    if (self.options.loop && self.options.lazy) {
-                        if (self.index + 1 < len && speed < 0) {
-                            var src = self.images[self.index + 2].getAttribute('_src');
-                            if (src) {
-                                self.images[self.index + 2].setAttribute('src' , src);
-                                self.images[self.index + 2].removeAttribute('_src');
-                            };
-                        } else if (self.index > 1 && speed > 0) {
-                            var src = self.images[self.index].getAttribute('_src');
-                            if (src) {
-                                self.images[self.index].setAttribute('src' , src);
-                                self.images[self.index].removeAttribute('_src');
-                            };
-                        }
-                    };
-                    self.doAnimate = false;
+                        if (typeof self.options.onChangeEnd == 'function') {
+                            self.options.onChangeEnd.call(self);
+                        };
+                        // 图片懒加载，只有当无缝轮播且需要懒加载的时候，才选择图片懒加载方式
+                        if (self.options.loop && self.options.lazy) {
+                            if (self.index + 1 < len && speed < 0) {
+                                var src = self.images[self.index + 2].getAttribute('_src');
+                                if (src) {
+                                    self.images[self.index + 2].setAttribute('src' , src);
+                                    self.images[self.index + 2].removeAttribute('_src');
+                                };
+                            } else if (self.index > 1 && speed > 0) {
+                                var src = self.images[self.index].getAttribute('_src');
+                                if (src) {
+                                    self.images[self.index].setAttribute('src' , src);
+                                    self.images[self.index].removeAttribute('_src');
+                                };
+                            }
+                        };
+                        self.doAnimate = false;
+                    }
+                }
+                move();
+            } else {
+                if (offset < 0) {
+                    this.list.style.left = offset * this.index + 'px';
+                } else {
+                    this.list.style.left = -offset * this.index + 'px';
                 }
             }
-            move();
-        } else {
-            if (offset < 0) {
-                this.list.style.left = offset * this.index + 'px';
-            } else {
-                this.list.style.left = -offset * this.index + 'px';
-            }
+        } else if (this.options.effect == 'fade') {
+            var speed = offset;
+            var self = this;
+            var len = this.lis.length;
+            var prevIndex = ''; // 前一个
+            for (var i = 0 ; i < len ; i++) {
+                if (this.lis[i].style.opacity == 1) {
+                    prevIndex = i;
+                    break;
+                }
+            };
+            var currentIndex = this.index;
+            var fade = function () {
+                self.lis[currentIndex].style.opacity = parseFloat(self.lis[currentIndex].style.opacity) + speed;
+                self.lis[prevIndex].style.opacity = parseFloat(self.lis[prevIndex].style.opacity) - speed;
+                self.lis[currentIndex].style.zIndex = 1;
+                if (parseFloat(self.lis[currentIndex].style.opacity) < 1) {
+                    setTimeout(fade , 100);
+                } else {
+                    self.lis[currentIndex].style.opacity = 1;
+                    self.lis[prevIndex].style.opacity = 0;
+                    self.lis[prevIndex].style.zIndex = 0;
+                }
+            };
+            fade();
         }
     };
     Carousel.prototype.showDot = function () {
@@ -285,5 +364,35 @@
         };
         this.dots[this.index].classList.add('active');
     };
+    Carousel.prototype.play = function () {
+        var self = this;
+        this.timerId = setInterval(function () {
+            self.nextHandler();
+        } , this.options.interval);
+    };
+    Carousel.prototype.stop = function () {
+        clearInterval(this.timerId);
+    };
+    Carousel.prototype.onMouseover = function () {
+        this.stop();
+    };
+    Carousel.prototype.onMouseout = function () {
+        this.play();
+    };
+    Carousel.prototype.fade = function () {
+        if (!this.options.animate) {
+            for (var i = 0 ; i < this.lis.length ; i++) {
+                if (this.lis[i].style.opacity == 1) {
+                    this.lis[i].style.opacity = 0;
+                    this.lis[i].style.zIndex = 0;
+                    break;
+                }
+            };
+            this.lis[this.index].style.opacity = 1;
+            this.lis[this.index].style.zIndex = 1;
+        } else {
+            this.animate(0.3);
+        }
+    }
     root.Carousel = Carousel;
 })();
