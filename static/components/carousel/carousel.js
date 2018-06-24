@@ -169,7 +169,6 @@
                     self.lis[i].style.position = 'absolute';
                     self.lis[i].style.top = 0;
                     self.lis[i].style.left = 0;
-                    
                 }
             }
         };
@@ -218,6 +217,9 @@
                 };
             };
         } else if (this.options.effect == 'fade') {
+            if (this.doAnimate) {
+                return;
+            }
             if (this.index == 0) {
                 this.index = this.lis.length - 1;
             } else {
@@ -264,6 +266,9 @@
                 };
             }
         } else if (this.options.effect == 'fade') {
+            if (this.doAnimate) {
+                return;
+            }
             if (this.index == this.lis.length - 1) {
                 this.index = 0;
             } else {
@@ -350,6 +355,7 @@
                     self.lis[currentIndex].style.opacity = 1;
                     self.lis[prevIndex].style.opacity = 0;
                     self.lis[prevIndex].style.zIndex = 0;
+                    self.doAnimate = false;
                 }
             };
             fade();
@@ -380,6 +386,7 @@
         this.play();
     };
     Carousel.prototype.fade = function () {
+        this.doAnimate = true;
         if (!this.options.animate) {
             for (var i = 0 ; i < this.lis.length ; i++) {
                 if (this.lis[i].style.opacity == 1) {

@@ -20,16 +20,16 @@
             <img src="public/image/slider2.jpg" class="carousel-image" alt="">
         </li>
         <li class="carousel-li">
-            <img src="public/image/slider3.jpg" class="carousel-image" alt="">
+            <img _src="public/image/slider3.jpg" class="carousel-image" alt="">
         </li>
         <li class="carousel-li">
-            <img src="public/image/slider4.jpg" class="carousel-image" alt="">
+            <img _src="public/image/slider4.jpg" class="carousel-image" alt="">
         </li>
         <li class="carousel-li">
-            <img src="public/image/slider5.jpg" class="carousel-image" alt="">
+            <img _src="public/image/slider5.jpg" class="carousel-image" alt="">
         </li>
         <li class="carousel-li">
-            <img src="public/image/slider6.jpg" class="carousel-image" alt="">
+            <img _src="public/image/slider6.jpg" class="carousel-image" alt="">
         </li>
         <li class="carousel-li">
             <img src="public/image/slider7.jpg" class="carousel-image" alt="">
@@ -42,13 +42,13 @@
 <script>
 var carousel = document.getElementById('carousel');
 new Carousel(carousel , {
-    lazy : false,
+    lazy : true,
     dot : true,
     time : 20,
     animate : true,
     loop : true,
-    effect : 'slide',   //slide or fade
-    autoPlay : false,
+    effect : 'slide',   // 轮播图的效果 slide or fade
+    autoPlay : true,
     interval : 2000,
     onChangeStart : function () {
         console.log('移动前执行');
