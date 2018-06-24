@@ -3,7 +3,28 @@
 
 
 ### 介绍：
-图片轮播适用于PC版，采用原生js来实现，不依赖任何框架或库。
+图片轮播适用于PC版，采用原生js来实现，不依赖任何框架或库。使用的时候需要使用指定的html结构，再引入相应的css和js文件，当然你自己也可以根据这个组件来进行修改，成为符合自己需求的组件。
+
+html结构为：
+```
+<div class="container" id="carousel">
+    <ul class="carousel-list">
+        <li class="carousel-li">
+            <img src="public/image/slider1.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img src="public/image/slider2.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img src="public/image/slider3.jpg" class="carousel-image" alt="">
+        </li>
+        <li class="carousel-li">
+            <img src="public/image/slider4.jpg" class="carousel-image" alt="">
+        </li>
+    </ul>
+</div>
+```
+里面的clas也不能修改，因为css和js都会用到。该图片轮播图片，必须至少三张图片以上。
 
 ### 使用文档：
 - 1、使用图片懒加载，那么就必须将lazy属性设置为true，并且在html中给img标签添加"_src"属性值为图片路径（第一个，第二个，和最后一个img标签除外）
