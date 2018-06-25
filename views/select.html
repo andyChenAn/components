@@ -4,9 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>选择地区组件</title>
+    <link rel="stylesheet" href="public/css/reset.css">
+    <link rel="stylesheet" href="public/css/font.css">
+    <link rel="stylesheet" href="public/components/select/select.css">
+    <script src="public/util/util.js"></script>
+    <script src="public/components/select/select.js"></script>
 </head>
 <body>
-    
+
+<h3 style="text-align: center;padding: 20px;">地区选择组件</h3>
+<div id="select" style="padding: 30px;">
+    <select name="province">
+        <option>- 请选择 -</option>
+    </select>
+</div>
+
+<script>
+var select = document.getElementById('select');
+Select(select , {
+    dataUrl : './public/components/select/area.json'
+});
+
+</script>
+
 </body>
 </html>

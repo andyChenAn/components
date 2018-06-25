@@ -9,8 +9,8 @@ app.use('/public' , express.static('static'));
 app.get('/' , (req , res) => {
     res.render('./index.html');
 });
-app.get('/backTop' , (req , res) => {
-    res.render('./backTop.html');
+app.get('/backtop' , (req , res) => {
+    res.render('./backtop.html');
 });
 app.get('/slider' , (req , res) => {
     res.render('./slider.html');
