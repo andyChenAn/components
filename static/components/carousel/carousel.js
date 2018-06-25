@@ -58,6 +58,23 @@
             }
         }
     };
+    // 兼容document.getElementsByClassName()方法，IE8不支持该方法
+    document.getElementsByClassName = document.getElementsByClassName || function (className) {
+        var elements = document.getElementsByTagName('*');
+        var result = [];
+        for (var i = 0 ; i < elements.length ; i++) {
+            if (elements[i].nodeType == 1 && elements[i].className.indexOf(className) > -1 ) {
+                var classes = elements[i].className.split(' ');
+                for (var j = 0 ; j < classes.length ; j++) {
+                    if (classes[j] == className) {
+                        result.push(elements[i]);
+                    }
+                }
+                
+            }
+        }
+        return result;
+    };
     function Carousel (element , options) {
         var defaults = {
             lazy : true,
@@ -124,25 +141,43 @@
         this.prev = document.getElementById('prev');
         this.next = document.getElementById('next');
         if (this.options.loop && this.options.effect == 'slide') {
-            var firstChild = this.list.firstElementChild;
-            var lastChild = this.list.lastElementChild;
+            var firstChild = this.list.firstElementChild || this.list.firstChild;
+            var lastChild = this.list.lastElementChild || this.list.lastChild;
             var cloneFirstChild = firstChild.cloneNode(true);
             var cloneLastChild = lastChild.cloneNode(true);
             this.list.insertBefore(cloneLastChild , firstChild);
             this.list.insertBefore(cloneFirstChild , lastChild.nextSibling);
+            // IE8不支持document.getElementsByClassName，因为原生document.getElementsByClassName方法返回的元素是一个引用，而不是一个副本
+            // 所以当我们开启无缝循环轮播的时候，会在之前的图片前后再添加两张图片，这个时候，自己写的兼容doucment.getElementsByClassName方法是返回一个数组的
+            // 所以需要在添加完成之后再重新赋值
+            this.lis = document.getElementsByClassName('carousel-li');
+            this.images = document.getElementsByClassName('carousel-image');
         }
     };
     Carousel.prototype.compute = function () {
         var self = this;
         var oneImage = this.images[0];
         oneImage.onload = function () {
-            var style = this.currentStyle || window.getComputedStyle(this , null);
-            var imageW = parseInt(style.width);
-            var imageH = parseInt(style.height);
+            // IE8不支持getComputedStyle，只支持currentStyle
+            if (window.getComputedStyle) {
+                var style = window.getComputedStyle(this , null);
+                
+            } else {
+                var style = this.currentStyle;
+            };
+            // IE8浏览器显示style.width为100%，所以我们可以使用直接获取img的width和height
+            if (style.width == '100%') {
+                var imageW = oneImage.width;
+                var imageH = oneImage.height;
+            } else {
+                var imageW = parseInt(style.width);
+                var imageH = parseInt(style.height);
+            };
             self.target.style.height = imageH + 'px';
             self.list.style.height = imageH + 'px';
             if (self.options.effect == 'slide') {
                 self.list.style.width = self.lis.length * imageW + 'px';
+                console.log(self.list.style.width);
                 if (self.options.loop) {
                     self.list.style.left = -imageW + 'px';
                 } else {
@@ -363,12 +398,25 @@
     };
     Carousel.prototype.showDot = function () {
         for (var i = 0 ; i < this.dots.length ; i++) {
-            if (this.dots[i].classList.contains('active')) {
-                this.dots[i].classList.remove('active');
-                break;
+            // IE9及以下是不支持classList
+            if (this.target.classList) {
+                if (this.dots[i].classList.contains('active')) {
+                    this.dots[i].classList.remove('active');
+                    break;
+                };
+            } else {
+                if (this.dots[i].className.indexOf('active') > -1) {
+                    this.dots[i].className = 'dot';
+                    break;
+                };
             }
         };
-        this.dots[this.index].classList.add('active');
+        // IE9及以下是不支持classList
+        if (this.target.classList) {
+            this.dots[this.index].classList.add('active');
+        } else {
+            this.dots[this.index].className = 'dot active';
+        }
     };
     Carousel.prototype.play = function () {
         var self = this;
