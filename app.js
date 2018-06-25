@@ -18,7 +18,9 @@ app.get('/slider' , (req , res) => {
 app.get('/carousel' , (req , res) => {
     res.render('./carousel.html');
 });
-
+app.get('/select' , (req , res) => {
+    res.render('./select.html');
+})
 app.listen('3000' , () => {
     console.log('listening port on 3000');
 });
