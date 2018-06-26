@@ -50,9 +50,10 @@
         this.target = target;
         this.options = _.extend({} , defaults , options);
         this.data = null;
+        this.list = {};
+        this.isThree = false;
         this.provinceDom = document.getElementById('province');
         this.cityDom = document.getElementById('city');
-        this.areaDom = document.getElementById('area');
         this.init();
     };
     Select.prototype.init = function () {
@@ -60,10 +61,10 @@
         eventUtil.addEvent(this.provinceDom , 'change' , this.onChangeProvince.bind(this));
         eventUtil.addEvent(this.cityDom , 'change' , this.onChangeCity.bind(this));
         // 获取数据
-        this.getAreaData();
+        this.getData();
     };
     // 获取数据
-    Select.prototype.getAreaData = function () {
+    Select.prototype.getData = function () {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('get' , this.options.dataUrl);
@@ -80,22 +81,53 @@
         xhr.send();
     };
     Select.prototype.parseData = function () {
-        var province = {};
-        for (var code in this.data) {
-            if (code % 10000 == 0) {
-                province[code] = this.data[code];
+        for (var code1 in this.data) {
+            if (code1 % 10000 == 0) {
+                if (['北京市' , '上海市' , '天津市' , '重庆市' , '香港特别行政区' , '澳门特别行政区'].indexOf(this.data[code1]) > -1) {
+                    this.list[this.data[code1]] = [];
+                    for (var code4 in this.data) {
+                        var j = code4 - code1;
+                        if (j > 100 && j < 250) {
+                            this.list[this.data[code1]].push(this.data[code4]);
+                        }
+                    }
+                } else {
+                    this.list[this.data[code1]] = {};
+                }
+                for (var code2 in this.data) {
+                    var p = code2 - code1;
+                    if (p > 0 && p < 10000) {
+                        if (code2 % 100 == 0) {
+                            this.list[this.data[code1]][this.data[code2]] = [];
+                            for (var code3 in this.data) {
+                                var q = code3 - code2;
+                                if (q > 0 && q < 100) {
+                                    this.list[this.data[code1]][this.data[code2]].push(this.data[code3]);
+                                }
+                            }
+                        } else if (p > 8000) {
+                            this.list[this.data[code1]][this.data[code2]] = [];
+                            for (var code4 in this.data) {
+                                var q = code4 - code2;
+                                if (q > 0 && q < 100) {
+                                    this.list[this.data[code1]][this.data[code2]].push(this.data[code4]);
+                                }
+                            }
+                        }
+                    };
+                }
             }
         };
-        this.renderProvinceData(province);
+        this.renderProvinceData();
     };
-    Select.prototype.renderProvinceData = function (province) {
+    Select.prototype.renderProvinceData = function () {
         var provinceDom = document.getElementById('province');
         var fragDoc = document.createDocumentFragment();
-        for (var code in province) {
+        for (var province in this.list) {
             var option = document.createElement('option');
-            option.setAttribute('name' , code);
-            option.setAttribute('value' , code);
-            option.innerText = province[code];
+            option.setAttribute('name' , province);
+            option.setAttribute('value' , province);
+            option.innerText = province;
             fragDoc.appendChild(option);
         };
         provinceDom.appendChild(fragDoc);
@@ -105,72 +137,68 @@
         var currentOption = this.provinceDom.children[currentIndex];
         var currentOptionValue = parseInt(currentOption.value);
         var currentValue = currentOption.innerText;
-        var municipalities = ['北京市' , '天津市' , '重庆市' , '上海市'];
         this.cityDom.innerHTML = '<option>- 请选择 -</option>';
         //this.areaDom.innerHTML = '<option>- 请选择 -</option>';
-        var city = {};
-        // if (municipalities.indexOf(currentValue) == -1) {
-        //     var areaDom = document.createElement('select');
-        //     areaDom.id = 'area';
-        //     areaDom.name = 'area';
-        //     areaDom.innerHTML = '<option>- 请选择 -</option>';
-        //     //areaDom.setAttribute('disabled' , true);
-        //     this.target.appendChild(areaDom);
-        // };
-        for (var code in this.data) {
-            var p = code - currentOptionValue;
-            if (municipalities.indexOf(currentValue) > -1) {
-                if (p > 0 && p < 10000) {
-                    city[code] = this.data[code];
-                }
-            } else {
-                if (p > 0 && p < 10000) {
-                    if (code % 100 == 0) {
-                        city[code] = this.data[code];
-                    };
-                }
-            }
-        };
-        this.renderCityData(city);
-    };
-    Select.prototype.renderCityData = function (city) {
-        var cityDom = document.getElementById('city');
-        cityDom.innerHTML = '<option>- 请选择 -</option>';
         var fragDoc = document.createDocumentFragment();
-        for (var code in city) {
-            var option = document.createElement('option');
-            option.setAttribute('name' , code);
-            option.setAttribute('value' , code);
-            option.innerText = city[code];
-            fragDoc.appendChild(option);
-        };
-        cityDom.appendChild(fragDoc);
+        if (!this.list[currentValue].length) {
+            for (var city in this.list[currentValue]) {
+                var option = document.createElement('option');
+                option.setAttribute('name' , city);
+                option.setAttribute('value' , city);
+                option.innerText = city;
+                fragDoc.appendChild(option);
+            };
+            if (!this.isThree) {
+                var selectDom = document.createElement('select');
+                selectDom.id = 'area';
+                selectDom.name = 'area';
+                selectDom.innerHTML = '<option>- 请选择 -</option>';
+                this.target.appendChild(selectDom);
+                this.areaDom = document.getElementById('area');
+                this.isThree = true;
+            };
+        } else {
+            this.isThree = false;
+            for (var i = 0 , len = this.list[currentValue].length ; i < len ; i++) {
+                var city = this.list[currentValue][i];
+                var option = document.createElement('option');
+                option.setAttribute('name' , city);
+                option.setAttribute('value' , city);
+                option.innerText = city;
+                fragDoc.appendChild(option);
+            };
+            if (this.areaDom) {
+                this.target.removeChild(this.areaDom);
+            };
+        }
+        this.cityDom.appendChild(fragDoc);
     };
     Select.prototype.onChangeCity = function (evt) {
         var currentIndex = evt.target.selectedIndex;
         var currentOption = this.cityDom.children[currentIndex];
         var currentOptionValue = parseInt(currentOption.value);
-        var area = {};
-        for (var code in this.data) {
-            var p = code - currentOptionValue;
-            if (p > 0 && p < 100) {
-                area[code] = this.data[code];
+        var currentValue = currentOption.innerText;
+        this.areaDom.innerHTML = '<option>- 请选择 -</option>';
+        for (var province in this.list) {
+            for (var city in this.list[province]) {
+                if (city == currentValue) {
+                    var fragDoc = document.createDocumentFragment();
+                    for (var i = 0 , len = this.list[province][city].length ; i < len ; i++) {
+                        var area = this.list[province][city][i];
+                        var option = document.createElement('option');
+                        option.setAttribute('name' , area);
+                        option.setAttribute('value' , area);
+                        option.innerText = area;
+                        fragDoc.appendChild(option);
+                    };
+                    this.areaDom.appendChild(fragDoc);
+                }
             }
-        };
-        this.renderAreaData(area);
+        }
     };
     Select.prototype.renderAreaData = function (area) {
         var areaDom = document.getElementById('area');
-        areaDom.innerHTML = '<option>- 请选择 -</option>';
-        var fragDoc = document.createDocumentFragment();
-        for (var code in area) {
-            var option = document.createElement('option');
-            option.setAttribute('name' , code);
-            option.setAttribute('value' , code);
-            option.innerText = area[code];
-            fragDoc.appendChild(option);
-        };
-        areaDom.appendChild(fragDoc);
+        
     }
     root.Select = Select;
 })();
