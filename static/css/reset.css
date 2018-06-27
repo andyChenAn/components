@@ -11,3 +11,11 @@ a {
     color: #000;
     text-decoration: none;
 }
+pre {
+    font-family: "Microsoft Yahei",Arial,Helvetica;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}

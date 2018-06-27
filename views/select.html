@@ -14,23 +14,110 @@
 <body>
 
 <h3 style="text-align: center;padding: 20px;">地区选择组件</h3>
-<div id="select" style="padding: 30px;">
-    <select name="province" id="province">
-        <option>- 请选择 -</option>
-    </select>
-    <select name="city" id="city">
-        <option>- 请选择 -</option>
-    </select>
-</div>
-
-<script>
+<div style="width: 800px;margin: 0 auto;">
+    <div id="select">
+        <select name="province" id="province">
+            <option>- 请选择 -</option>
+        </select>
+        <select name="city" id="city">
+            <option>- 请选择 -</option>
+        </select>
+    </div>
+    <br>
+    <div style="border: 1px dotted #ccc;margin-bottom: 20px;">
+        <pre style="padding: 10px">
 var select = document.getElementById('select');
 Select(select , {
     dataUrl : './public/components/select/area.json',
-    province : '湖南',
-    city : '怀化',
-    area : '麻阳'
+    onChange : function (value) {
+        console.log(value);
+    }
 });
+        </pre>
+    </div>
+    <div id="select1">
+        <select name="province">
+            <option>- 请选择 -</option>
+        </select>
+        <select name="city">
+            <option>- 请选择 -</option>
+        </select>
+    </div>
+    <br>
+    <div style="border: 1px dotted #ccc;margin-bottom: 20px;">
+        <pre style="padding: 10px;">
+var select1 = document.getElementById('select1');
+Select(select1 , {
+    dataUrl : './public/components/select/area.json',
+    province : '广东',
+    city : '广州',
+    area : '天河',
+    onChange : function (value) {
+        console.log(value);
+    }
+});
+        </pre>
+    </div>
+    <div id="select2" style="position: relative;">
+        <label for="address">所在地址：</label>
+        <input type="text" class="address" style="border: none;border-bottom: 1px solid #ccc;outline: none;">
+        <!-- <div class="select-container">
+            <ul class="select-overflow">
+                <li class="select-nav select-current">请选择</li>
+                <li class="select-nav">请选择</li>
+                <li class="select-nav">请选择</li>
+            </ul>
+            <div class="select-desc">
+                <div class="select-overflow">
+                    <span class="select-item">北京</span>
+                    <span class="select-item">北京</span>
+                    <span class="select-item">北京</span>
+                    <span class="select-item">北京</span>
+                    <span class="select-item">北京</span>
+                    <span class="select-item">北京</span>
+                    <span class="select-item">北京</span>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+<div style="height: 1000px;"></div>
+<script>
+
+var select = document.getElementById('select');
+Select(select , {
+    dataUrl : './public/components/select/area.json',
+    onChange : function (value) {
+        console.log(value);
+    }
+});
+
+var select1 = document.getElementById('select1');
+Select(select1 , {
+    dataUrl : './public/components/select/area.json',
+    province : '广东',
+    city : '广州',
+    area : '天河',
+    onChange : function (value) {
+        console.log(value);
+    }
+});
+
+var select2 = document.getElementById('select2');
+Select(select2 , {
+    dataUrl : './public/components/select/area.json',
+    province : '广东',
+    city : '广州',
+    area : '天河',
+    type : 'pop-select',
+    onLastChange : function (province , city , area) {
+        console.log(23)
+        console.log(province , city , area);
+    },
+    onChange : function () {
+        console.log(646)
+    }
+})
 
 </script>
 
