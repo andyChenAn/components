@@ -100,9 +100,14 @@
         } else if (this.options.type == 'pop-select') {
             eventUtil.addEvent(this.addressDom , 'click' , this.onClick.bind(this));
         }
-        
-        // 获取数据
-        this.getData();
+        // 获取数据，如果dataUrl没有填写的花，那么传入data属性，将data属性的值赋值给this.list
+        if (this.options.dataUrl) {
+            this.getData();
+        } else {
+            this.list = this.options.data;
+            this.renderProvinceData();
+            this.initSelect();
+        }
     };
     // 获取数据
     Select.prototype.getData = function () {
@@ -116,7 +121,13 @@
                 } catch (err) {
                     console.log('将数据解析为json对象失败');
                 };
-                self.parseData();
+                if (self.options.parse) {
+                    self.parseData();
+                } else {
+                    self.list = self.data;
+                    self.renderProvinceData();
+                    self.initSelect();
+                }
             }
         };
         xhr.send();

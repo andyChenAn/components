@@ -16,10 +16,10 @@
 <h3 style="text-align: center;padding: 20px;">地区选择组件</h3>
 <div style="width: 800px;margin: 0 auto;">
     <div id="select">
-        <select name="province" id="province">
+        <select name="province">
             <option>- 请选择 -</option>
         </select>
-        <select name="city" id="city">
+        <select name="city">
             <option>- 请选择 -</option>
         </select>
     </div>
@@ -63,7 +63,7 @@ Select(select1 , {
         <input type="text" class="address" id="address" style="border: none;border-bottom: 1px solid #ccc;outline: none;">
     </div>
     <br>
-    <div style="border: 1px dotted #ccc;">
+    <div style="border: 1px dotted #ccc;margin-bottom: 20px;">
         <pre style="padding: 10px;">
 var select2 = document.getElementById('select2');
 var address = document.getElementById('address');
@@ -86,6 +86,34 @@ Select(select2 , {
 });
         </pre>
     </div>
+    <div id="select3">
+        <select name="province">
+            <option>- 请选择 -</option>
+        </select>
+        <select name="city">
+            <option>- 请选择 -</option>
+        </select>
+    </div>
+    <br>
+    <div style="border: 1px dotted #ccc;">
+        <pre style="padding: 10px;">
+var select3 = document.getElementById('select3');
+var data = {
+    "语文" : {
+        "语文level1" : ["unit1" , "unit2" , "unit3"],
+        "语文level2" : ["unit4" , "unit5" , "unit6"],
+        "语文level3" : ["unit7" , "unit8" , "unit9"]
+    },
+    "数学" : {
+        "数学level1" : ["lesson1" , "lesson2" , "lesson3"]
+    }
+};
+Select(select3 , {
+    data : data,
+    parse : false
+});         
+        </pre>
+    </div>
 </div>
 <div style="height: 1000px;"></div>
 <script>
@@ -93,6 +121,7 @@ Select(select2 , {
 var select = document.getElementById('select');
 Select(select , {
     dataUrl : './public/components/select/area.json',
+    parse : true,
     onChange : function (value) {
         console.log(value);
     }
@@ -101,6 +130,7 @@ Select(select , {
 var select1 = document.getElementById('select1');
 Select(select1 , {
     dataUrl : './public/components/select/area.json',
+    parse : true,
     province : '广东',
     city : '广州',
     area : '天河',
@@ -113,6 +143,7 @@ var select2 = document.getElementById('select2');
 var address = document.getElementById('address');
 Select(select2 , {
     dataUrl : './public/components/select/area.json',
+    parse : true,
     province : '广东',
     city : '广州',
     area : '天河',
@@ -131,6 +162,23 @@ Select(select2 , {
         console.log('切换')
     }
 });
+
+var select3 = document.getElementById('select3');
+var data = {
+    "语文" : {
+        "语文level1" : ["unit1" , "unit2" , "unit3"],
+        "语文level2" : ["unit4" , "unit5" , "unit6"],
+        "语文level3" : ["unit7" , "unit8" , "unit9"]
+    },
+    "数学" : {
+        "数学level1" : ["lesson1" , "lesson2" , "lesson3"]
+    }
+};
+Select(select3 , {
+    data : data,
+    parse : false
+});
+
 
 </script>
 

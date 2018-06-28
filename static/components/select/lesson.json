@@ -1,0 +1,10 @@
+{
+    "语文" : {
+        "语文level1" : ["unit1" , "unit2" , "unit3"],
+        "语文level2" : ["unit4" , "unit5" , "unit6"],
+        "语文level3" : ["unit7" , "unit8" , "unit9"]
+    },
+    "数学" : {
+        "数学level1" : ["lesson1" , "lesson2" , "lesson3"]
+    }
+}

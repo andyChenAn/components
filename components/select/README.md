@@ -102,6 +102,36 @@ Select(select , {
     }
 });
 ```
+- 5、除了地区数据，也可以使用其他数据来实现三级联动效果，只需要设置parse为false，表示解析的数据不是地区数据，而且数据可是必须是：
+```
+{
+    "语文" : {
+        "语文level1" : ["unit1" , "unit2" , "unit3"],
+        "语文level2" : ["unit4" , "unit5" , "unit6"],
+        "语文level3" : ["unit7" , "unit8" , "unit9"]
+    },
+    "数学" : {
+        "数学level1" : ["lesson1" , "lesson2" , "lesson3"]
+    }
+}
+```
+```
+var select3 = document.getElementById('select3');
+var data = {
+    "语文" : {
+        "语文level1" : ["unit1" , "unit2" , "unit3"],
+        "语文level2" : ["unit4" , "unit5" , "unit6"],
+        "语文level3" : ["unit7" , "unit8" , "unit9"]
+    },
+    "数学" : {
+        "数学level1" : ["lesson1" , "lesson2" , "lesson3"]
+    }
+};
+Select(select3 , {
+    data : data,
+    parse : false
+});
+```
 ### 调用方法：
 
 ```
@@ -119,5 +149,7 @@ Select(element , options)
 dataUrl | 无 | 是 | 获取地区数据的路径
 type | select | 否 | 选择通过哪种效果来选择地区，select或者pop-select
 setPopStyle | 无 | 否 | 设置弹框的位置
+parse | true | 否 | 解析的数据是否为地区数据，true表示是，否表示不是
+data | 无 | 否 | 当dataUrl为空时，则可以直接将数据传入
 onLastChange | 无 | 否 | 最后一次地区选择时的操作
 onChange | 无 | 否 | 每次地区选择时的操作
