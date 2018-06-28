@@ -65,7 +65,8 @@
             return new Select(target , options);
         }
         var defaults = {
-            type : 'select'    //地区选择方式，select或pop-select
+            type : 'select',    //地区选择方式，select或pop-select
+            parse : true
         };
         this.target = target;
         this.options = _.extend({} , defaults , options);
