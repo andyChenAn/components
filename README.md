@@ -1,6 +1,7 @@
 # components
 前端组件集合，主要是通过造轮子来巩固自己的基础知识。
 ### 目录
-- [回到顶部组件](https://github.com/andyChenAn/components/blob/master/components/backToTop)
+- [回到顶部组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/backToTop)
 - [图片轮播组件(移动端)](https://github.com/andyChenAn/components/blob/master/components/slider)
 - [图片轮播组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/carousel)
+- [地区选择组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/select)
