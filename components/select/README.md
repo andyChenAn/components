@@ -16,6 +16,15 @@
 </div>
 ```
 
+弹框效果的html结构为：
+```
+<div id="select2" style="position: relative;">
+    <label for="address">所在地址：</label>
+    <input type="text" class="address" id="address">
+</div>
+```
+里面的input标签可以换成其他标签，但是class不能删，需要用到。其他标签都是可以删除的。
+
 ### 使用文档：
 - 1、默认的三级联动效果：
 
