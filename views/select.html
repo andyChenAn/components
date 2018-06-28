@@ -60,25 +60,31 @@ Select(select1 , {
     </div>
     <div id="select2" style="position: relative;">
         <label for="address">所在地址：</label>
-        <input type="text" class="address" style="border: none;border-bottom: 1px solid #ccc;outline: none;">
-        <!-- <div class="select-container">
-            <ul class="select-overflow">
-                <li class="select-nav select-current">请选择</li>
-                <li class="select-nav">请选择</li>
-                <li class="select-nav">请选择</li>
-            </ul>
-            <div class="select-desc">
-                <div class="select-overflow">
-                    <span class="select-item">北京</span>
-                    <span class="select-item">北京</span>
-                    <span class="select-item">北京</span>
-                    <span class="select-item">北京</span>
-                    <span class="select-item">北京</span>
-                    <span class="select-item">北京</span>
-                    <span class="select-item">北京</span>
-                </div>
-            </div>
-        </div> -->
+        <input type="text" class="address" id="address" style="border: none;border-bottom: 1px solid #ccc;outline: none;">
+    </div>
+    <br>
+    <div style="border: 1px dotted #ccc;">
+        <pre style="padding: 10px;">
+var select2 = document.getElementById('select2');
+var address = document.getElementById('address');
+Select(select2 , {
+    dataUrl : './public/components/select/area.json',
+    type : 'pop-select',
+    setPopStyle : {
+        left : '40px'
+    },
+    onLastChange : function () {
+        if (arguments.length > 2) {
+            address.value = arguments[0] + arguments[1] + arguments[2];
+        } else {
+            address.value = arguments[0] + arguments[1]
+        }
+    },
+    onChange : function () {
+        console.log('切换')
+    }
+});
+        </pre>
     </div>
 </div>
 <div style="height: 1000px;"></div>
@@ -104,20 +110,27 @@ Select(select1 , {
 });
 
 var select2 = document.getElementById('select2');
+var address = document.getElementById('address');
 Select(select2 , {
     dataUrl : './public/components/select/area.json',
     province : '广东',
     city : '广州',
     area : '天河',
     type : 'pop-select',
-    onLastChange : function (province , city , area) {
-        console.log(23)
-        console.log(province , city , area);
+    setPopStyle : {
+        left : '40px'
+    },
+    onLastChange : function () {
+        if (arguments.length > 2) {
+            address.value = arguments[0] + arguments[1] + arguments[2];
+        } else {
+            address.value = arguments[0] + arguments[1]
+        }
     },
     onChange : function () {
-        console.log(646)
+        console.log('切换')
     }
-})
+});
 
 </script>
 
