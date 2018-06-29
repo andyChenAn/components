@@ -31,10 +31,10 @@
 ```
 html代码：
 <div id="select">
-    <select name="province" id="province">
+    <select name="province">
         <option>- 请选择 -</option>
     </select>
-    <select name="city" id="city">
+    <select name="city">
         <option>- 请选择 -</option>
     </select>
 </div>
@@ -53,6 +53,17 @@ Select(select , {
 - 2、可初始化省份，城市，地区的三级联动效果
 
 ```
+html代码：
+<div id="select1">
+    <select name="province">
+        <option>- 请选择 -</option>
+    </select>
+    <select name="city">
+        <option>- 请选择 -</option>
+    </select>
+</div>
+```
+```
 var select1 = document.getElementById('select1');
 Select(select1 , {
     dataUrl : './public/components/select/area.json',
@@ -65,10 +76,23 @@ Select(select1 , {
 });
 ```
 - 3、弹框选择地区效果
+
 ```
+html代码：
+<div id="select2" style="position: relative;">
+    <label for="address">所在地址：</label>
+    <input type="text" class="address" id="address">
+</div>
+```
+```
+var select2 = document.getElementById('select2');
+var address = document.getElementById('address');
 Select(select2 , {
     dataUrl : './public/components/select/area.json',
     type : 'pop-select',
+    setPopStyle : {
+        left : '40px'
+    },
     onLastChange : function () {
         if (arguments.length > 2) {
             address.value = arguments[0] + arguments[1] + arguments[2];
@@ -146,10 +170,10 @@ Select(element , options)
 
 参数 | 默认值 | 是否必须 | 说明
 ---|---|---|---|
-dataUrl | 无 | 是 | 获取地区数据的路径
+dataUrl | 无 | 否 | 获取地区数据的路径
 type | select | 否 | 选择通过哪种效果来选择地区，select或者pop-select
 setPopStyle | 无 | 否 | 设置弹框的位置
-parse | true | 否 | 解析的数据是否为地区数据，true表示是，否表示不是
+parse | true | 否 | 解析的数据是否为地区数据，true表示是，false表示不是
 data | 无 | 否 | 当dataUrl为空时，则可以直接将数据传入
 onLastChange | 无 | 否 | 最后一次地区选择时的操作
 onChange | 无 | 否 | 每次地区选择时的操作
