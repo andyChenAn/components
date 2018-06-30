@@ -20,6 +20,9 @@ app.get('/carousel' , (req , res) => {
 });
 app.get('/select' , (req , res) => {
     res.render('./select.html');
+});
+app.get('/fullpage' , (req , res) => {
+    res.render('./fullpage.html');
 })
 app.listen('3000' , () => {
     console.log('listening port on 3000');

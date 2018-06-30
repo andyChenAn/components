@@ -142,15 +142,9 @@ Select(select1 , {
 var select2 = document.getElementById('select2');
 var address = document.getElementById('address');
 Select(select2 , {
-    dataUrl : './public/components/select/area.json',
-    parse : true,
-    province : '广东',
-    city : '广州',
-    area : '天河',
+    dataUrl : './public/components/select/lesson.json',
+    parse : false,
     type : 'pop-select',
-    setPopStyle : {
-        left : '40px'
-    },
     onLastChange : function () {
         if (arguments.length > 2) {
             address.value = arguments[0] + arguments[1] + arguments[2];
