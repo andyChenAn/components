@@ -14,6 +14,21 @@ html结构代码：
     <div class="section section4">4</div>
 </div>
 ```
+```
+var fullpage = document.getElementById('fullpage');
+Fullpage(fullpage , {
+    easing : 'ease',        // 过渡动画效果
+    loop : true,
+    seamless : true,
+    dot : true,
+    onBefore : function () {
+        console.log('滚动开始前')
+    },
+    onAfter : function () {
+        console.log('滚动结束后')
+    }
+});
+```
 
 ### 用法：
 ```

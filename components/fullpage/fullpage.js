@@ -46,10 +46,7 @@
         };
         this.target = element;
         var defaults = {
-            easing : 'ease',
-            dot : true,
-            loop : true,
-            seamless : true
+
         };
         this.options = _.extend({} , defaults , options);
         this.winH = window.innerHeight;
@@ -88,12 +85,13 @@
     };
     Fullpage.prototype.initEvents = function () {
         eventUtil.addEvent(document.body , 'mousewheel' , this.onMouseWheelHandle.bind(this));
+        eventUtil.addEvent(document.body , 'DOMMouseScroll' , this.onMouseWheelHandle.bind(this));
         eventUtil.addEvent(document.body , 'transitionend' , this.onTransitionEndHandle.bind(this));
         eventUtil.addEvent(window , 'resize' , this.onResizeHandle.bind(this));
     };
     Fullpage.prototype.onMouseWheelHandle = function (evt) {
         // 滚动向上
-        if (evt.wheelDelta < 0) {
+        if (evt.wheelDelta < 0 || evt.detail > 0) {
             if (!this.isMove) {
                 // 是否进行循环滚动
                 if (this.options.loop) {
@@ -142,11 +140,12 @@
                 this.move(-this.winH);
             }
         }
+        this.changeDot(this.index);
     };
     Fullpage.prototype.move = function (width) {
         if (this.options.onBefore && typeof this.options.onBefore == 'function') {
             this.options.onBefore.call(this);
-        };
+        }
         this.setTransition(width);
     };
     Fullpage.prototype.setTransition = function (offset) {
@@ -181,7 +180,9 @@
             this.index = this.len - 1;
             this.setNoTransition(-this.winH * this.len);
         };
-        this.changeDot(this.index);
+        if (this.options.onAfter && typeof this.options.onAfter == 'function') {
+            this.options.onAfter.call(this);
+        }
         console.log(this.index)
     };
     Fullpage.prototype.onResizeHandle = function () {
@@ -228,7 +229,14 @@
                 break;
             }
         };
-        this.dotList[currentIndex].className = 'dot-active';
+        if (currentIndex == this.len) {
+            this.dotList[0].className = 'dot-active';
+        } else if (currentIndex == -1) {
+            this.dotList[this.len - 1].className = 'dot-active';
+        } else {
+            this.dotList[currentIndex].className = 'dot-active';
+        }
+        
     };
     root.Fullpage = Fullpage;
 })();
