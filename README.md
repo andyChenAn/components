@@ -11,3 +11,4 @@
 - [图片轮播组件(移动端)](https://github.com/andyChenAn/components/blob/master/components/slider)
 - [图片轮播组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/carousel)
 - [地区选择组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/select)
+- [全屏滚动组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/fullpage)

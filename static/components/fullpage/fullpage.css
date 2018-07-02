@@ -21,23 +21,37 @@ html , body {
     background-color: blue;
 }
 .section4 {
-    background-color: yellow;
+    background-color: #f60;
 }
 .dot-box{
     position: fixed;
     top: 50%;
     right: 20px;
     z-index: 2;
+    margin-top: -35px;
 }
-.dot{
+.dot-list {
+    position: relative;
+}
+.dot-list li {
+    display: block;
+    position: relative;
     width: 4px;
     height: 4px;
+    margin: 10px;
+}
+.dot-list .dot-active {
+    width: 8px;
+    height: 8px;
+}
+.dot-active .dot {
+    margin-left: -2px;
+}
+.dot{
+    width: 100%;
+    height: 100%;
     background-color: #fff;
     border-radius: 50%;
     display: block;
-    margin: 10px;
-}
-.dot-active {
-    width: 14px;
-    height: 14px;
+    position: absolute;
 }
