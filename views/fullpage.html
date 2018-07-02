@@ -22,8 +22,14 @@
         easing : 'ease',        // 过渡动画效果
         loop : true,
         seamless : true,
-        dot : true
-    })
+        dot : true,
+        onBefore : function () {
+            console.log('滚动开始前')
+        },
+        onAfter : function () {
+            console.log('滚动结束后')
+        }
+    });
 </script>
 </body>
 </html>

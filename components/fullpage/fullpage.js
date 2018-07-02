@@ -46,7 +46,10 @@
         };
         this.target = element;
         var defaults = {
-
+            easing : 'ease',
+            dot : true,
+            loop : true,
+            seamless : true
         };
         this.options = _.extend({} , defaults , options);
         this.winH = window.innerHeight;
@@ -141,6 +144,9 @@
         }
     };
     Fullpage.prototype.move = function (width) {
+        if (this.options.onBefore && typeof this.options.onBefore == 'function') {
+            this.options.onBefore.call(this);
+        };
         this.setTransition(width);
     };
     Fullpage.prototype.setTransition = function (offset) {
