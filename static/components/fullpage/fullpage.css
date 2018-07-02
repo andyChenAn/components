@@ -13,15 +13,19 @@ html , body {
 }
 .section1 {
     background-color: red;
+    -webkit-backface-visibility: hidden;
 }
 .section2 {
     background-color: green;
+    -webkit-backface-visibility: hidden;
 }
 .section3 {
     background-color: blue;
+    -webkit-backface-visibility: hidden;
 }
 .section4 {
     background-color: #f60;
+    -webkit-backface-visibility: hidden;
 }
 .dot-box{
     position: fixed;

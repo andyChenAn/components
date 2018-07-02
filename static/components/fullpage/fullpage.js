@@ -164,6 +164,7 @@
     Fullpage.prototype.setNoTransition = function (offset) {
         this.target.style.transition = 'transform 0s '+ this.options.easing +'';
         this.target.style.transform = 'translate3d(0,'+ offset +'px,0)';
+        
     };
     Fullpage.prototype.onTransitionEndHandle = function () {
         this.isMove = false;
