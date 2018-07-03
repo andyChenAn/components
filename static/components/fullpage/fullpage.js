@@ -40,32 +40,92 @@
         this.prototype = new noop();
         return bound;
     };
+    // 判断是否支持transition属性
+    function isSurportTransition() { 
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串 
+        var name = navigator.appName;
+        var isIE=window.ActiveXObject || "ActiveXObject" in window;
+        var version = '';
+        if (isIE) { 
+            var reIE = new RegExp("MSIE (\\d+\\.\\d+);"); 
+            reIE.test(userAgent); 
+            var fIEVersion = parseFloat(RegExp["$1"]); 
+            if(userAgent.indexOf('MSIE 6.0')!=-1){
+                version = 6;
+            }else if(fIEVersion == 7) { 
+                version = 7
+            } else if(fIEVersion == 8) { 
+                version = 8;
+            } else if(fIEVersion == 9) { 
+                version = 9
+            } else if(fIEVersion == 10) { 
+                version = 10;
+            }
+        };
+        if (name != 'Microsoft Internet Explorer') {
+            return true;
+        } else if (name == 'Microsoft Internet Explorer' && version > 9) {
+            return true;
+        } else {
+            return false;
+        };
+    };
+    // 兼容document.getElementsByClassName()方法，IE8不支持该方法
+    document.getElementsByClassName = document.getElementsByClassName || function (className) {
+        var elements = document.getElementsByTagName('*');
+        var result = [];
+        for (var i = 0 ; i < elements.length ; i++) {
+            if (elements[i].nodeType == 1 && elements[i].className.indexOf(className) > -1 ) {
+                var classes = elements[i].className.split(' ');
+                for (var j = 0 ; j < classes.length ; j++) {
+                    if (classes[j] == className) {
+                        result.push(elements[i]);
+                    }
+                }
+                
+            }
+        }
+        return result;
+    };
     function Fullpage (element , options) {
         if (!(this instanceof Fullpage)) {
             return new Fullpage(element , options);
         };
         this.target = element;
         var defaults = {
-
+            easing : 'ease',
+            dot : true,
+            loop : true,
+            seamless : true,
+            duration : 500
         };
         this.options = _.extend({} , defaults , options);
-        this.winH = window.innerHeight;
+        this.winH = window.innerHeight || document.body.clientHeight;
         this.index = 0;
         this.isMove = false;
         this.sections = document.getElementsByClassName('section');
         this.len = this.sections.length;
+        this.isSurportTransition = isSurportTransition();
         this.direction = '';
         this.init();
     };
     Fullpage.prototype.init = function () {
-        if (this.options.seamless) {
+        if (this.options.seamless && this.options.loop) {
             this.cloneLastSection = this.sections[this.len - 1].cloneNode(true);
             this.cloneFirstSection = this.sections[0].cloneNode(true);
             this.target.appendChild(this.cloneFirstSection);
             this.target.insertBefore(this.cloneLastSection , this.sections[0]);
-            this.setNoTransition(-this.winH);
+            if (this.isSurportTransition) {
+                this.setNoTransition(-this.winH);
+            } else {
+                this.setStyle(-this.winH);
+            }
         } else {
-            this.setNoTransition(0);
+            if (this.isSurportTransition) {
+                this.setNoTransition(0);
+            } else {
+                this.setStyle(0);
+            }
         };
         // 初始化小圆圈
         if (this.options.dot) {
@@ -74,9 +134,10 @@
         // 事件绑定
         this.initEvents();
     };
-    Fullpage.prototype.setStyle = function () {
+    Fullpage.prototype.setStyle = function (offset) {
+        console.log(offset)
         if (this.options.seamless) {
-            this.target.style.top = -this.winH + 'px';
+            this.target.style.top = offset + 'px';
         } else {
             this.target.style.top = 0;
         }
@@ -145,26 +206,65 @@
     Fullpage.prototype.move = function (width) {
         if (this.options.onBefore && typeof this.options.onBefore == 'function') {
             this.options.onBefore.call(this);
+        };
+        if (this.isSurportTransition) {
+            this.setTransition(width);
+        } else {
+            this.goTop();
         }
-        this.setTransition(width);
+    };
+    Fullpage.prototype.goTop = function () {
+        var self = this;
+        var dist = this.direction == 'up' ? -this.winH : this.winH;
+        if (!this.options.seamless && this.options.loop) {
+            if (this.index == 0 && this.direction == 'up') {
+                dist = (this.len - 1) * this.winH;
+            } else if (this.index == this.len - 1 && this.direction == 'down') {
+                dist = -(this.len - 1) * this.winH;
+            }
+        };
+        var speed = dist / (this.options.duration / 17);
+        var top = parseInt(this.target.style.top) + dist;
+        var go = function () {
+            self.target.style.top = parseInt(self.target.style.top) + speed + 'px';
+            if (speed < 0 && parseInt(self.target.style.top) > top || speed > 0 && parseInt(self.target.style.top) < top) {
+                setTimeout(go , 17);
+            } else {
+                self.target.style.top = top + "px";
+                self.isMove = false;
+                console.log(self.index)
+                // 当需要无缝滚动的时候，在最后一屏滚动结束后，重新更新容器及index
+                if (self.index == self.len && self.options.seamless) {
+                    self.index = 0;
+                    self.setStyle(-self.winH);
+                } else if (self.index == -1 && self.options.seamless) {
+                    self.index = self.len - 1;
+                    self.setStyle(-self.winH * self.len);
+                };
+                if (self.options.onAfter && typeof self.options.onAfter == 'function') {
+                    self.options.onAfter.call(this);
+                }
+            }
+        };
+        go();
     };
     Fullpage.prototype.setTransition = function (offset) {
         if (this.direction == 'up') {
             // 因为使用无缝循环轮播的时候，多添加了第一屏和最后一屏，所以初始化的时候会从第二屏开始
             // 所以这里计算的时候都加了1，而不使用无缝轮播时，则不需要加1
-            if (this.options.seamless) {
+            if (this.options.seamless && this.options.loop) {
                 this.target.style.transform = 'translate3d(0 , '+ offset * (this.index + 1) +'px , 0)';
             } else {
                 this.target.style.transform = 'translate3d(0 , '+ offset * this.index +'px , 0)';
             }
         } else if (this.direction == 'down') {
-            if (this.options.seamless) {
+            if (this.options.seamless && this.options.loop) {
                 this.target.style.transform = 'translate3d(0 , '+ offset * (this.index + 1) +'px , 0)';
             } else {
                 this.target.style.transform = 'translate3d(0 , '+ offset * this.index +'px , 0)';
             }
         }
-        this.target.style.transition = 'transform 1s '+ this.options.easing +'';
+        this.target.style.transition = 'transform '+ this.options.duration + 'ms '+ this.options.easing +'';
     };
     Fullpage.prototype.setNoTransition = function (offset) {
         this.target.style.transition = 'transform 0s '+ this.options.easing +'';
@@ -188,7 +288,7 @@
     Fullpage.prototype.onResizeHandle = function () {
         this.winH = window.innerHeight;
         this.target.style.height = '100%';
-        if (this.options.seamless) {
+        if (this.options.seamless && this.options.loop) {
             this.target.style.transform = 'translate3d(0 , '+ -this.winH * (this.index + 1) +'px , 0)';
         } else {
             this.target.style.transform = 'translate3d(0 , '+ -this.winH * this.index +'px , 0)';

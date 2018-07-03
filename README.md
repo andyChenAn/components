@@ -2,7 +2,7 @@
 前端组件集合，主要是通过造轮子来巩固自己的基础知识。所有的组件都配有具体的实现效果的例子。
 
 ### 使用：
-1、通过"git clone https://github.com/andyChenAn/components.git"来获取源代码
+1、通过"git clone https://github.com/andyChenAn/components.git" 来获取源代码
 
 2、cd到components目录，直接输入命令：node app.js即可。前提是要安装package.json文件中的依赖模块。
 

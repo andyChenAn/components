@@ -20,9 +20,10 @@
     var fullpage = document.getElementById('fullpage');
     Fullpage(fullpage , {
         easing : 'ease',        // 过渡动画效果
-        loop : true,
-        seamless : true,
+        loop : false,
+        seamless : false,
         dot : true,
+        duration : 1000,
         onBefore : function () {
             console.log('滚动开始前')
         },
