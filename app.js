@@ -23,7 +23,10 @@ app.get('/select' , (req , res) => {
 });
 app.get('/fullpage' , (req , res) => {
     res.render('./fullpage.html');
-})
+});
+app.get('/lazyload' , (req , res) => {
+    res.render('./lazyload.html');
+});
 app.listen('3000' , () => {
     console.log('listening port on 3000');
 });
