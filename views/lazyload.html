@@ -12,18 +12,29 @@
     <script src="public/components/lazyload/lazyload.js"></script>
 </head>
 <body>
-    <button id="btn">click</button>
-    <div id="container">
-        <div><img src="public/image/1.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/2.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/3.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/4.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/5.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/6.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/7.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/8.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/9.jpg" width="400px;" alt=""></div>
-        <div><img src="public/image/10.jpg" width="400px;" alt=""></div>
+    <div id="container" style="position: relative;">
+        <div style="width: 400px;height: 400px;"><img _src="public/image/1.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/2.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/3.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/4.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/5.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/6.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/7.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/8.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/9.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div style="width: 400px;height: 400px;"><img _src="public/image/10.jpg" style="width:400px;height:100%;" alt=""></div>
+        <div class="img1"></div>
+        <div style="background: url(public/image/slider2.jpg) no-repeat center center;height: 400px;width: 400px;background-size: contain"></div>
+        <div style="background: url(public/image/slider3.jpg) no-repeat center center;height: 400px;width: 400px;background-size: contain"></div>
+        <div style="background: url(public/image/slider4.jpg) no-repeat center center;height: 400px;width: 400px;background-size: contain"></div>
     </div>
 </body>
+<script>
+    var container = document.getElementById('container');
+    Lazyload(container , {
+        loadingText : '',     // 加载中的loading文字，如果不用loading图片的话，可以选择loading文字，也可以不加，必须loading为true，否则不生效
+        loadingIcon : '',     //一个加载中的loading图片，也可以不加，必须loading为true，否则不生效
+        loading : true       // 是否需要loading效果，true表示需要，false表示不需要
+    });
+</script>
 </html>
