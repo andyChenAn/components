@@ -57,7 +57,7 @@
         this.init();
     };
     Lazyload.prototype.init = function () {
-        // 初始化target下面的所有的img或background-image元素的信息
+        // 初始化target下面的所有的img元素的信息
         this.initImageInfo(this.target);
         // 绑定事件
         this.initEvents();
@@ -66,12 +66,13 @@
     }
     Lazyload.prototype.initImageInfo = function (target) {
         var nodes = target.getElementsByTagName('*');
-        var reg = /url\((.*)\)/;
         for (var i = 0 , len = nodes.length ; i < len ; i++) {
             var node = nodes[i];
             var style = window.getComputedStyle(node , null) || node.currentStyle;
-            if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img') || style.backgroundImage != 'none') {
-                var src = node.getAttribute('_src') || style.backgroundImage.replace(reg , "$1");
+            if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img')) {
+                node.style.opacity = 0;
+                node.style.transition = 'opacity 0.2s ease';
+                var src = node.getAttribute('_src');
                 var top = node.offsetTop;
                 var left = node.offsetLeft;
                 var w = parseInt(style.width);
@@ -82,11 +83,18 @@
                     top : top,
                     left : left,
                     w : w,
-                    h : h
+                    h : h,
+                    loaded : false
                 }
             }
         };
         console.log(this.imgs)
+    };
+    Lazyload.prototype.setLoading = function (img) {
+        img.node.onload = function () {
+            img.loaded = true;
+            img.node.style.opacity = 1;
+        };
     };
     Lazyload.prototype.initEvents = function () {
         // 这里可以设置函数节流，防止频繁触发滚动事件
@@ -101,14 +109,16 @@
                     if (this.imgs[src].top > this.startTop + this.winH && this.imgs[src].top <= scrollTop + this.winH) {
                         this.imgs[src].node.removeAttribute('_src');
                         this.imgs[src].node.setAttribute('src' , src);
+                        this.setLoading(this.imgs[src]);
                     }
                 }
             } else {  
                 // 滚动条向上滚
                 for (var src in this.imgs) {
-                    if (this.imgs[src].top + this.imgs[src].h > scrollTop) {
+                    if (this.imgs[src].top + this.imgs[src].h > scrollTop && this.imgs[src].top < scrollTop + this.imgs[src].h) {
                         this.imgs[src].node.removeAttribute('_src');
                         this.imgs[src].node.setAttribute('src' , src);
+                        this.setLoading(this.imgs[src]);
                     }
                 }
             }
@@ -123,6 +133,7 @@
                 if (this.imgs[src].top <= this.winH) {
                     this.imgs[src].node.removeAttribute('_src');
                     this.imgs[src].node.setAttribute('src' , src);
+                    this.setLoading(this.imgs[src]);
                 }
             }
         } else {
@@ -132,6 +143,7 @@
                 if (this.imgs[src].top < this.winH + this.startTop && (this.imgs[src].top + this.imgs[src].h) > this.startTop) {
                     this.imgs[src].node.removeAttribute('_src');
                     this.imgs[src].node.setAttribute('src' , src);
+                    this.setLoading(this.imgs[src]);
                 }
             }
         }
