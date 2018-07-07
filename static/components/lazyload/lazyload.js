@@ -65,13 +65,13 @@
         this.initRenderImage();
     }
     Lazyload.prototype.initImageInfo = function (target) {
-        var nodes = target.getElementsByTagName('*');
+        var nodes = target.getElementsByTagName('img');
         for (var i = 0 , len = nodes.length ; i < len ; i++) {
             var node = nodes[i];
             var style = window.getComputedStyle(node , null) || node.currentStyle;
             if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img')) {
                 node.style.opacity = 0;
-                node.style.transition = 'opacity 0.2s ease';
+                node.style.transition = 'opacity 1s ease';
                 var src = node.getAttribute('_src');
                 var top = node.offsetTop;
                 var left = node.offsetLeft;
@@ -91,9 +91,9 @@
         console.log(this.imgs)
     };
     Lazyload.prototype.setLoading = function (img) {
-        img.node.onload = function () {
-            img.loaded = true;
+        img.node.onload = function (e) {
             img.node.style.opacity = 1;
+            img.loaded = true;
         };
     };
     Lazyload.prototype.initEvents = function () {
@@ -147,6 +147,36 @@
                 }
             }
         }
+    };
+    Lazyload.prototype.addMoreImage = function () {
+        var nodes = this.target.getElementsByTagName('img');
+        for (var i = 0 , len = nodes.length ; i < len ; i++) {
+            var node = nodes[i];
+            var style = window.getComputedStyle(node , null) || node.currentStyle;
+            if (node.complete) {
+                continue;
+            } else {
+                if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img')) {
+                    node.style.opacity = 0;
+                    node.style.transition = 'opacity 1s ease';
+                    var src = node.getAttribute('_src');
+                    var top = node.offsetTop;
+                    var left = node.offsetLeft;
+                    var w = parseInt(style.width);
+                    var h = parseInt(style.height);
+                    this.imgs[src] = {
+                        node : node,
+                        src : src,
+                        top : top,
+                        left : left,
+                        w : w,
+                        h : h,
+                        loaded : false
+                    }
+                }
+            }
+        };
+        this.initRenderImage();
     };
     root.Lazyload = Lazyload;
 })();

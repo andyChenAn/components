@@ -24,11 +24,31 @@
         <div style="width: 400px;height: 400px;"><img _src="public/image/9.jpg" style="width:400px;height:100%;" alt=""></div>
         <div style="width: 400px;height: 400px;"><img _src="public/image/10.jpg" style="width:400px;height:100%;" alt=""></div>
     </div>
+    <div style="height: 700px;"></div>
+    <button id="btn" style="position: fixed;top: 50%;right: 40px;">加载更多图片</button>
 </body>
 <script>
     var container = document.getElementById('container');
-    Lazyload(container , {
-
+    var lazy = Lazyload(container , {
+        animate : true
     });
+    var btn = document.getElementById('btn');
+    btn.addEventListener('click' , function () {
+        var doc = document.createDocumentFragment();
+        var html = '';
+        for (var i = 1 ; i < 6 ; i++) {
+            var div = document.createElement('div');
+            div.style.width = '400px';
+            div.style.height = '400px';
+            var img = document.createElement('img');
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.setAttribute('_src' , 'public/image/slider' + i + '.jpg')
+            div.appendChild(img);
+            doc.appendChild(div);
+        };
+        container.appendChild(doc);
+        lazy.addMoreImage();
+    })
 </script>
 </html>
