@@ -51,7 +51,9 @@ new Lazyload(element , options)
 ```
 Lazyload(element , options)
 ```
+
 #### options参数：
+参数 | 默认值 | 是否必须 | 说明
 ---|---|---|---|
 throttleTime | 100 | 否 | 设置触发滚动条事件的频率，单位是毫秒
 complete | 无 | 否 | 图片加载完成之后的回调
