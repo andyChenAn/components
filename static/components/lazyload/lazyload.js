@@ -13,17 +13,9 @@
         },
         removeEvent : function (element , type , handler) {
             if (window.removeEventListener) {
-                if (handler) {
-                    element.removeEventListener(type , handler);
-                } else {
-                    element.removeEventListener(type);
-                }
+                element.removeEventListener(type , handler);
             } else {
-                if (handler) {
-                    element.detachEvent('on' + type , handler);
-                } else {
-                    element.detachEvent('on' + type);
-                }
+                element.detachEvent('on' + type , handler);
             }
         }
     };
@@ -40,12 +32,28 @@
         this.prototype = new noop();
         return bound;
     };
+    // 函数节流
+    function throttle (cb , interval) {
+        var startTime = new Date();
+        var timerId = null;
+        return function () {
+            timerId = setTimeout(function () {
+                var now = new Date();
+                if (now - startTime > interval) {
+                    cb();
+                    startTime = now;
+                } else {
+                    clearTimeout(timerId);
+                }
+            })
+        }
+    };
     function Lazyload (element , options) {
         if (!(this instanceof Lazyload)) {
             return new Lazyload(element , options);
         }
         var defaults = {
-
+            throttleTime : 100
         };
         this.target = element;
         this.options = _.extend({} , defaults , options);
@@ -65,13 +73,13 @@
         this.initRenderImage();
     }
     Lazyload.prototype.initImageInfo = function (target) {
-        var nodes = target.getElementsByTagName('img');
+        var nodes = this.nodes = target.getElementsByTagName('img');
         for (var i = 0 , len = nodes.length ; i < len ; i++) {
             var node = nodes[i];
             var style = window.getComputedStyle(node , null) || node.currentStyle;
             if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img')) {
                 node.style.opacity = 0;
-                node.style.transition = 'opacity 1s ease';
+                node.style.transition = node.style.webkitTransition = node.style.mozTransition = node.style.msTransition = 'opacity 0.2s ease';
                 var src = node.getAttribute('_src');
                 var top = node.offsetTop;
                 var left = node.offsetLeft;
@@ -90,35 +98,44 @@
         };
         console.log(this.imgs)
     };
-    Lazyload.prototype.setLoading = function (img) {
+    Lazyload.prototype.load = function (img) {
+        var self = this;
+        var src = img.src;
+        img.node.removeAttribute('_src');
+        img.node.setAttribute('src' , src);
+        img.node.style.opacity = 1;
         img.node.onload = function (e) {
-            img.node.style.opacity = 1;
             img.loaded = true;
+            delete self.imgs[img.src];
+            if (JSON.stringify(self.imgs) == '{}') {
+                eventUtil.removeEvent(window , 'scroll' , self.scrollHandler);
+                if (typeof self.options.complete == 'function') {
+                    self.options.complete.call(self);
+                }
+            }
         };
     };
     Lazyload.prototype.initEvents = function () {
         // 这里可以设置函数节流，防止频繁触发滚动事件
-        eventUtil.addEvent(window , 'scroll' , this.onScrollHandler.bind(this));
+        this.scrollHandler = throttle(this.onScrollHandler.bind(this) , this.options.throttleTime);
+        eventUtil.addEvent(window , 'scroll' , this.scrollHandler);
     };
     Lazyload.prototype.onScrollHandler = function () {
+        console.log(1222);
         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         if (this.startScroll) {
             if (scrollTop - this.startTop > 0) {
                 // 滚动条向下滚
                 for (var src in this.imgs) {
                     if (this.imgs[src].top > this.startTop + this.winH && this.imgs[src].top <= scrollTop + this.winH) {
-                        this.imgs[src].node.removeAttribute('_src');
-                        this.imgs[src].node.setAttribute('src' , src);
-                        this.setLoading(this.imgs[src]);
+                        this.load(this.imgs[src]);
                     }
                 }
             } else {  
                 // 滚动条向上滚
                 for (var src in this.imgs) {
                     if (this.imgs[src].top + this.imgs[src].h > scrollTop && this.imgs[src].top < scrollTop + this.imgs[src].h) {
-                        this.imgs[src].node.removeAttribute('_src');
-                        this.imgs[src].node.setAttribute('src' , src);
-                        this.setLoading(this.imgs[src]);
+                        this.load(this.imgs[src]);
                     }
                 }
             }
@@ -131,25 +148,23 @@
             for (var src in this.imgs) {
                 // 图片在可视区域内显示
                 if (this.imgs[src].top <= this.winH) {
-                    this.imgs[src].node.removeAttribute('_src');
-                    this.imgs[src].node.setAttribute('src' , src);
-                    this.setLoading(this.imgs[src]);
-                }
+                    this.load(this.imgs[src]);
+                };
             }
         } else {
             for (var src in this.imgs) {
                 // 图片在可视区域内显示
                 // 所以不管图片是在上面被遮挡还是图片在下面被遮挡都不加载图片
                 if (this.imgs[src].top < this.winH + this.startTop && (this.imgs[src].top + this.imgs[src].h) > this.startTop) {
-                    this.imgs[src].node.removeAttribute('_src');
-                    this.imgs[src].node.setAttribute('src' , src);
-                    this.setLoading(this.imgs[src]);
+                    this.load(this.imgs[src]);
                 }
             }
         }
     };
     Lazyload.prototype.addMoreImage = function () {
-        var nodes = this.target.getElementsByTagName('img');
+        var nodes = this.nodes = this.target.getElementsByTagName('img');
+        // 当有新照片添加进来的时候，再一次绑定鼠标滚轮事件
+        eventUtil.addEvent(window , 'scroll' , this.scrollHandler);
         for (var i = 0 , len = nodes.length ; i < len ; i++) {
             var node = nodes[i];
             var style = window.getComputedStyle(node , null) || node.currentStyle;
@@ -158,7 +173,7 @@
             } else {
                 if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img')) {
                     node.style.opacity = 0;
-                    node.style.transition = 'opacity 1s ease';
+                    node.style.transition = node.style.webkitTransition = node.style.mozTransition = node.style.msTransition = 'opacity 0.2s ease';
                     var src = node.getAttribute('_src');
                     var top = node.offsetTop;
                     var left = node.offsetLeft;

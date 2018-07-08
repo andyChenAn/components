@@ -12,3 +12,4 @@
 - [图片轮播组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/carousel)
 - [地区选择组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/select)
 - [全屏滚动组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/fullpage)
+- [图片懒加载组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/lazyload)
