@@ -34,8 +34,25 @@
             console.log('图片加载完成');
         }
     });
+    // 兼容事件绑定方法addEventListener
+    var eventUtil = {
+        addEvent : function (element , type , handler) {
+            if (window.addEventListener) {
+                element.addEventListener(type , handler);
+            } else {
+                element.attachEvent('on' + type , handler);
+            }
+        },
+        removeEvent : function (element , type , handler) {
+            if (window.removeEventListener) {
+                element.removeEventListener(type , handler);
+            } else {
+                element.detachEvent('on' + type , handler);
+            }
+        }
+    };
     var btn = document.getElementById('btn');
-    btn.addEventListener('click' , function () {
+    eventUtil.addEvent(btn , 'click' , function () {
         var doc = document.createDocumentFragment();
         var html = '';
         for (var i = 1 ; i < 6 ; i++) {

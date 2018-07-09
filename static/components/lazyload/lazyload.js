@@ -61,7 +61,7 @@
         // 因为在滚动条不是从最顶部滚动的时候，页面在加载的时候会触发一次滚动事件，尽管还没有滚动鼠标
         // 添加这个属性就是防止在没有滚动的时候触发滚动事件
         this.startScroll = false;
-        this.winH = window.innerHeight || document.body.clientHeight;
+        this.winH = window.innerHeight || document.documentElement.clientHeight;
         this.init();
     };
     Lazyload.prototype.init = function () {
@@ -76,7 +76,7 @@
         var nodes = this.nodes = target.getElementsByTagName('img');
         for (var i = 0 , len = nodes.length ; i < len ; i++) {
             var node = nodes[i];
-            var style = window.getComputedStyle(node , null) || node.currentStyle;
+            var style = node.currentStyle || window.getComputedStyle(node , null);
             if ((node.nodeType == 1 && node.nodeName.toLowerCase() == 'img')) {
                 node.style.opacity = 0;
                 node.style.transition = node.style.webkitTransition = node.style.mozTransition = node.style.msTransition = 'opacity 0.2s ease';
@@ -167,7 +167,7 @@
         eventUtil.addEvent(window , 'scroll' , this.scrollHandler);
         for (var i = 0 , len = nodes.length ; i < len ; i++) {
             var node = nodes[i];
-            var style = window.getComputedStyle(node , null) || node.currentStyle;
+            var style = node.currentStyle || window.getComputedStyle(node , null);
             if (node.complete) {
                 continue;
             } else {
