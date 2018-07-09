@@ -1,0 +1,88 @@
+.datepicker{
+    width: 280px;
+    border: 1px solid #fff;
+    list-style: none;
+    font-size: 14px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    background-clip: padding-box;
+    line-height: 1.5;
+}
+.datepicker-header {
+    border-bottom: 1px solid #e8e8e8;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.prev-year-btn {
+    position: absolute;
+    left: 7px;
+    top: 0;
+    color: rgba(0,0,0,.45);
+    padding: 0 5px;
+    font-size: 16px;
+}
+.prev-year-btn {
+    position: absolute;
+    left: 7px;
+    top: 0;
+    color: rgba(0,0,0,.45);
+    padding: 0 5px;
+    font-size: 14px;
+}
+.prev-month-btn {
+    position: absolute;
+    left: 29px;
+    top: 0;
+    color: rgba(0,0,0,.45);
+    padding: 0 5px;
+    font-size: 14px;
+}
+.next-month-btn {
+    position: absolute;
+    right: 29px;
+    top: 0;
+    color: rgba(0,0,0,.45);
+    padding: 0 5px;
+    font-size: 14px;
+}
+.next-year-btn {
+    position: absolute;
+    right: 7px;
+    top: 0;
+    color: rgba(0,0,0,.45);
+    padding: 0 5px;
+    font-size: 14px;
+}
+.datepicker-body{
+    padding: 8px 12px;
+}
+.datepicker-table{
+    border: 0;
+    text-align: center;
+    border-collapse: collapse;
+    max-width: 100%;
+    background-color: transparent;
+    width: 100%;
+}
+.datepicker-column-header{
+    border: 0;
+    text-align: center;
+    line-height: 18px;
+    width: 33px;
+    padding: 6px 0;
+    text-align: center;
+    font-weight: normal;
+    color: rgba(0,0,0,.65);
+}
+.datepicker-tbody{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}

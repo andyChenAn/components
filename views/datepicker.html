@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>日期选择组件</title>
+    <link rel="stylesheet" href="public/css/reset.css">
+    <link rel="stylesheet" href="public/components/datepicker/datepicker.css">
+    <script src="public/util/util.js"></script>
+    <script src="public/components/datepicker/datepicker.js"></script>
+</head>
+<body>
+<h1 style="text-align: center;">日期选择组件</h1>
+<div style="width: 800px;margin: 40px auto;">
+    <input type="text" placeholder="请选择日期" id="datepicker" style="padding: 5px;">
+    <div class="datepicker">
+        <div class="datepicker-header">
+            <div style="position: relative;">
+                <a class="prev-year-btn" href="javaascript:;"><<</a>
+                <a class="prev-month-btn" href="javaascript:;"><</a>
+                <span class="year-month-select">2018年 7月</span>
+                <a class="next-month-btn" href="javascript:;">></a>
+                <a class="next-year-btn" href="javascript:;">>></a>
+            </div>
+        </div>
+        <div class="datepicker-body">
+            <table class="datepicker-table">
+                <thead>
+                    <tr>
+                        <th class="datepicker-column-header">一</th>
+                        <th class="datepicker-column-header">二</th>
+                        <th class="datepicker-column-header">三</th>
+                        <th class="datepicker-column-header">四</th>
+                        <th class="datepicker-column-header">五</th>
+                        <th class="datepicker-column-header">六</th>
+                        <th class="datepicker-column-header">日</th>
+                    </tr>
+                </thead>
+                <tbody class="datepicker-tbody">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var datepicker = document.getElementById('datapicker');
+    Datepicker(datepicker , {
+
+    });
+</script>
+</body>
+</html>
