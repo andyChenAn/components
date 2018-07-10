@@ -44,17 +44,9 @@
         },
         removeEvent : function (element , type , handler) {
             if (window.removeEventListener) {
-                if (handler) {
-                    element.removeEventListener(type , handler);
-                } else {
-                    element.removeEventListener(type);
-                }
+                element.removeEventListener(type , handler);
             } else {
-                if (handler) {
-                    element.detachEvent('on' + type , handler);
-                } else {
-                    element.detachEvent('on' + type);
-                }
+                element.detachEvent('on' + type , handler);
             }
         }
     };

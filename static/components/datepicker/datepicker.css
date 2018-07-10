@@ -86,3 +86,16 @@
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+.datepicker-footer{
+    border-top: 1px solid #e8e8e8;
+    line-height: 38px;
+    padding: 0 12px;
+}
+.datepicker-footer-btn{
+    text-align: center;
+    display: block;
+}
+.datepicker-today-btn{
+    color: #1890ff;
+    display: inline-block;
+}

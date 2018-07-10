@@ -13,8 +13,8 @@
 <body>
 <h1 style="text-align: center;">日期选择组件</h1>
 <div style="width: 800px;margin: 40px auto;">
-    <input type="text" placeholder="请选择日期" id="datepicker" style="padding: 5px;">
-    <div class="datepicker">
+    <input type="text" placeholder="请选择日期" id="datepicker" style="padding: 5px;outline: none;">
+    <!-- <div class="datepicker">
         <div class="datepicker-header">
             <div style="position: relative;">
                 <a class="prev-year-btn" href="javaascript:;"><<</a>
@@ -42,12 +42,20 @@
                 </tbody>
             </table>
         </div>
-    </div>
+        <div class="datepicker-footer">
+            <span class="datepicker-footer-btn">
+                <a href="javascript:;" class="datepicker-today-btn">今天</a>
+            </span>
+        </div>
+    </div> -->
 </div>
 <script>
-    var datepicker = document.getElementById('datapicker');
+    var datepicker = document.getElementById('datepicker');
     Datepicker(datepicker , {
-
+        top : '',
+        left : '',
+        format : 'YYYY:MM:DD',
+        joiner : '-'
     });
 </script>
 </body>
