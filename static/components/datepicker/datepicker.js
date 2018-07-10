@@ -41,29 +41,41 @@
         };
         this.target = element;
         this.options = _.extend({} , defaults , options);
+        this.data = [];
         this.init();
     };
     Datepicker.prototype.init = function () {
+        // 初始化当前日期
+        this.initDate();
         // 绑定事件
         this.initEvents();
+    };
+    Datepicker.prototype.initDate = function () {
+        var date = new Date();
+        this.currentDate = {
+            year : date.getFullYear(),
+            month : date.getMonth() + 1,
+            day : date.getDate(),
+            week : date.getDay()
+        };
     };
     Datepicker.prototype.initEvents = function () {
         eventUtil.addEvent(this.target , 'click' , this.onClickHandler.bind(this));
     };
-    Datepicker.prototype.getDateData = function (year , month , day) {
-        if (arguments.length) {
-            var date = new Date(year , month - 1 , day);
-        } else {
-            var date = new Date();
-        }
-        var data = {
-            year : date.getFullYear(),
-            month : date.getMonth() + 1,
-            day : date.getDate(),
-            week : date.getDay(),
-        };
-        return data;
-    };
+    // Datepicker.prototype.getDateData = function (year , month , day) {
+    //     if (arguments.length) {
+    //         var date = new Date(year , month - 1 , day);
+    //     } else {
+    //         var date = new Date();
+    //     }
+    //     var data = {
+    //         year : date.getFullYear(),
+    //         month : date.getMonth() + 1,
+    //         day : date.getDate(),
+    //         week : date.getDay(),
+    //     };
+    //     return data;
+    // };
     Datepicker.prototype.renderDatepicker = function () {
         var top , left;
         var frag = document.createDocumentFragment();
@@ -123,10 +135,34 @@
     };
     Datepicker.prototype.removeDatepicker = function () {
         this.datepickerBox.parentNode.removeChild(this.datepickerBox);
+        this.data = [];
     };
     Datepicker.prototype.onClickHandler = function () {
+        this.dateData();
         // 渲染日期选择器
         this.renderDatepicker();
+    };
+    Datepicker.prototype.dateData = function () {
+        //获取这个月,上个月，下个月的数据
+        this.getWantDate();
+    };
+    Datepicker.prototype.getWantDate = function () {
+        // 获取当月的天数
+        var days = new Date(this.currentDate.year , this.currentDate.month , 0).getDate();
+        // 当月第一天的日期数据
+        var firstDate = new Date(this.currentDate.year , this.currentDate.month - 1 , 1);
+
+        
+        // 保存当月日期数据
+        for (var i = 0 ; i < days ; i++) {
+            var ret = {
+                year : firstDate.getFullYear(),
+                month : firstDate.getMonth() + 1,
+                day : firstDate.getDate() + i,
+                week : (firstDate.getDay() + i) % 7
+            };
+            this.data.push(ret);
+        }
     };
     Datepicker.prototype.onChangeHandler = function (e) {
         if (e.target.className.indexOf('datepicker-today-btn') > -1) { // 点击的是"今天"按钮
