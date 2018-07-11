@@ -151,8 +151,19 @@
         var days = new Date(this.currentDate.year , this.currentDate.month , 0).getDate();
         // 当月第一天的日期数据
         var firstDate = new Date(this.currentDate.year , this.currentDate.month - 1 , 1);
-
-        
+        // 获取上月日期数据
+        var prevMonthLastDate = new Date(this.currentDate.year , this.currentDate.month - 1 , 0);
+        var lastDateWeek = prevMonthLastDate.getDay();
+        for (var i = 0 ; i > -lastDateWeek ; i--) {
+            var prevDate = new Date(this.currentDate.year , this.currentDate.month - 1 , i)
+            var prevRet = {
+                year : prevDate.getFullYear(),
+                month : prevDate.getMonth() + 1,
+                day : prevDate.getDate(),
+                week : prevDate.getDay()
+            }
+            this.data.unshift(prevRet);
+        };
         // 保存当月日期数据
         for (var i = 0 ; i < days ; i++) {
             var ret = {
@@ -162,7 +173,8 @@
                 week : (firstDate.getDay() + i) % 7
             };
             this.data.push(ret);
-        }
+        };
+        console.log(this.data)
     };
     Datepicker.prototype.onChangeHandler = function (e) {
         if (e.target.className.indexOf('datepicker-today-btn') > -1) { // 点击的是"今天"按钮
