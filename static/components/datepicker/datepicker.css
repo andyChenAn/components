@@ -99,3 +99,13 @@
     color: #1890ff;
     display: inline-block;
 }
+.datepicker-disabled {
+    color: #ccc;
+}
+.datepicker-tbody tr td div{
+    cursor: pointer;
+    margin: 0 5px;
+}
+.datepicker-tbody tr td div:hover{
+    background-color: #d1e9ff;
+}

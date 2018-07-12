@@ -41,7 +41,6 @@
         };
         this.target = element;
         this.options = _.extend({} , defaults , options);
-        this.data = [];
         this.init();
     };
     Datepicker.prototype.init = function () {
@@ -62,21 +61,7 @@
     Datepicker.prototype.initEvents = function () {
         eventUtil.addEvent(this.target , 'click' , this.onClickHandler.bind(this));
     };
-    // Datepicker.prototype.getDateData = function (year , month , day) {
-    //     if (arguments.length) {
-    //         var date = new Date(year , month - 1 , day);
-    //     } else {
-    //         var date = new Date();
-    //     }
-    //     var data = {
-    //         year : date.getFullYear(),
-    //         month : date.getMonth() + 1,
-    //         day : date.getDate(),
-    //         week : date.getDay(),
-    //     };
-    //     return data;
-    // };
-    Datepicker.prototype.renderDatepicker = function () {
+    Datepicker.prototype.renderDatepicker = function (data) {
         var top , left;
         var frag = document.createDocumentFragment();
         this.datepickerBox = document.createElement('div');
@@ -103,7 +88,7 @@
                                         '<th class="datepicker-column-header">日</th>'+
                                     '</tr>'+
                                 '</thead>'+
-                                '<tbody class="datepicker-tbody">'+
+                                '<tbody class="datepicker-tbody" id="datepicker-tbody">'+
                                     
                                 '</tbody>'+
                             '</table>'+
@@ -117,6 +102,22 @@
         this.datepickerBox.innerHTML = html;
         frag.appendChild(this.datepickerBox);
         document.body.appendChild(frag);
+        var tbody = document.getElementById('datepicker-tbody');
+        var rows = data.length / 7;
+
+        for (var i = 0 ; i < rows ; i++) {
+            var tr = document.createElement('tr');
+            var sliceData = data.slice(i * 7 , 7 * (i + 1));
+            for (var j = 0 ; j < 7 ; j++) {
+                var td = document.createElement('td');
+                td.innerHTML = '<div class="date" data-year="'+ sliceData[j].year +'" data-month="'+ sliceData[j].month +'">'+sliceData[j].day+'</div>'
+                if (sliceData[j].disabled) {
+                    td.className = 'datepicker-disabled';
+                };
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        };
         this.datepickerBox.style.position = 'absolute';
         var style = this.target.currentStyle || window.getComputedStyle(this.target , null);
         if (this.options.top) {
@@ -135,18 +136,15 @@
     };
     Datepicker.prototype.removeDatepicker = function () {
         this.datepickerBox.parentNode.removeChild(this.datepickerBox);
-        this.data = [];
     };
     Datepicker.prototype.onClickHandler = function () {
-        this.dateData();
-        // 渲染日期选择器
-        this.renderDatepicker();
-    };
-    Datepicker.prototype.dateData = function () {
         //获取这个月,上个月，下个月的数据
-        this.getWantDate();
+        var data = this.getWantDate();
+        // 渲染日期选择器
+        this.renderDatepicker(data);
     };
     Datepicker.prototype.getWantDate = function () {
+        var data = [];
         // 获取当月的天数
         var days = new Date(this.currentDate.year , this.currentDate.month , 0).getDate();
         // 当月第一天的日期数据
@@ -160,9 +158,10 @@
                 year : prevDate.getFullYear(),
                 month : prevDate.getMonth() + 1,
                 day : prevDate.getDate(),
-                week : prevDate.getDay()
+                week : prevDate.getDay(),
+                disabled : true
             }
-            this.data.unshift(prevRet);
+            data.unshift(prevRet);
         };
         // 保存当月日期数据
         for (var i = 0 ; i < days ; i++) {
@@ -170,15 +169,38 @@
                 year : firstDate.getFullYear(),
                 month : firstDate.getMonth() + 1,
                 day : firstDate.getDate() + i,
-                week : (firstDate.getDay() + i) % 7
+                week : (firstDate.getDay() + i) % 7,
+                disabled : false
             };
-            this.data.push(ret);
+            data.push(ret);
         };
-        console.log(this.data)
+        // 获取下个月日期数据
+        var currentMonthLastDate = new Date(this.currentDate.year , this.currentDate.month , 0);
+        var currentLastDateWeek = currentMonthLastDate.getDay();
+        for (var i = 1 ; i <= 7 - currentLastDateWeek ; i++) {
+            var nextDate = new Date(this.currentDate.year , this.currentDate.month , i);
+            var nextRet = {
+                year : nextDate.getFullYear(),
+                month : nextDate.getMonth() + 1,
+                day : nextDate.getDate(),
+                week : nextDate.getDay(),
+                disabled : true
+            }
+            data.push(nextRet);
+        }
+        return data;
     };
     Datepicker.prototype.onChangeHandler = function (e) {
         if (e.target.className.indexOf('datepicker-today-btn') > -1) { // 点击的是"今天"按钮
             var date = new Date();
+            var res = this.formatDate(this.options.format , date);
+            this.target.value = res;
+        } else if (e.target.className.indexOf('date') > -1) {   // 点击的是某个日期
+            var node = e.target;
+            var year = parseInt(node.getAttribute('data-year'));
+            var month = parseInt(node.getAttribute('data-month')) - 1;
+            var day = parseInt(node.innerText);
+            var date = new Date(year , month , day);
             var res = this.formatDate(this.options.format , date);
             this.target.value = res;
         }
