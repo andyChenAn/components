@@ -52,10 +52,13 @@
 <script>
     var datepicker = document.getElementById('datepicker');
     Datepicker(datepicker , {
-        top : '',
-        left : '',
+        top : 100,
+        left : 40,
         format : 'YYYY:MM:DD',
-        joiner : '-'
+        joiner : '-',
+        onChange : function () {
+            console.log(this.currentDate)
+        }
     });
 </script>
 </body>
