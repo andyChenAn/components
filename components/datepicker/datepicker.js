@@ -54,7 +54,8 @@
             return new Datepicker(element , options);
         }
         var defaults = {
-            format : 'YY:MM:DD'
+            format : 'YYYY:MM:DD',
+            joiner : '-'
         };
         this.target = element;
         this.options = _.extend({} , defaults , options);
