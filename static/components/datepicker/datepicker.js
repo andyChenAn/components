@@ -44,7 +44,6 @@
                         result.push(elements[i]);
                     }
                 }
-                
             }
         }
         return result;
