@@ -29,6 +29,9 @@ app.get('/lazyload' , (req , res) => {
 });
 app.get('/datepicker' , (req , res) => {
     res.render('./datepicker.html');
+});
+app.get('/upload' , (req , res) => {
+    res.render('./upload.html');
 })
 app.listen('3000' , () => {
     console.log('listening port on 3000');

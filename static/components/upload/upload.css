@@ -1,0 +1,18 @@
+.upload_input {
+    display: none;
+}
+.upload_button {
+    outline: none;
+    border: none;
+    background-color: #409eff;
+    line-height: 1;
+    -webkit-appearance: none;
+    cursor: pointer;
+    color: #fff;
+    padding: 9px 15px; 
+    border-radius: 5px;
+}
+.container {
+    width: 600px;
+    margin: 0 auto;
+}
