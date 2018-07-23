@@ -16,28 +16,48 @@
 <h1 style="text-align: center;padding: 40px;">图片上传组件</h1>
 
 <div class="container">
-    <input type="file" id="file">
-    <div id="preview-box"></div>
-</div>
-<div id="tpl">
-    <div style="overflow: hidden;background-color: #fff;border: 1px solid #c0ccda;border-radius: 6px;box-sizing: border-box;margin-top: 10px;padding: 10px 10px 10px 90px;height: 92px;">
-        <span id="upload-img" style="display: inline-block;float:left;"></span>
-        <span id="upload-desc" style="line-height: 70px;"></span>
-    </div>
+    <!-- <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="upload" id="file" multiple>
+        <span class="dropArea" id="dropZoom">可将图片拖到此处</span>
+        <div id="preview-box" class="preview-box"></div>
+    </form> -->
+    <input type="file" name="upload" id="file" multiple>
+    <span class="dropArea" id="dropZoom">可将图片拖到此处</span>
+    <div id="preview-box" class="preview-box"></div>
 </div>
 <script>
     var file = document.getElementById('file');
     var previewBox = document.getElementById('preview-box');
-    var tpl = document.getElementById('tpl');
+    var dropZoom = document.getElementById('dropZoom');
     Upload(file , {
-        template : tpl.innerHTML,           //前端预览图片的html模板，每个人的模板可能都不一样      
-        uploadMore : false,            // 是否可以一次上传多张图片
         previewBox : previewBox,      // 存放预览图的容器
         autoUpload : false,           // 是否自动上传
-        previewImageWidth : 70,       // 预览图的宽度
-        previewImageHeight : 70,       // 预览图的高度
-        
-    })
+        width : 70,       // 预览图的宽度
+        height : 70,       // 预览图的高度
+        size : 1024 * 1024 * 5,
+        onDragOver : function (dropDom) {
+            console.log('dragover');
+        },
+        onDragLeave : function (dropDom) {
+            console.log('dragleave');
+        },
+        success : function () {},
+        fail : function () {},
+        complete : function () {},
+        progress : function () {}
+    });
+    Upload(dropZoom , {
+        previewBox : previewBox,      // 存放预览图的容器
+        autoUpload : false,           // 是否自动上传
+        width : 70,       // 预览图的宽度
+        height : 70,       // 预览图的高度
+        onDragOver : function () {
+            console.log('dragover');
+        },
+        onDragLeave : function () {
+            console.log('dragleave');
+        }
+    });
 </script>
 </body>
 </html>
