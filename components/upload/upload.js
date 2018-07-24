@@ -160,6 +160,10 @@
                     self.uploadBtn.className = 'upload-btn'
                     self.uploadBtn.innerText = '上传照片';
                     self.options.previewBox.appendChild(self.uploadBtn);
+                    var deleteBtns = document.getElementsByClassName('upload-delete');
+                    for (var j = 0 ; j < deleteBtns.length ; j++) {
+                        eventUtil.addEvent(deleteBtns[j] , 'click' , self.removeFile.bind(self))
+                    }
                     if (!self.options.autoUpload) {
                         eventUtil.addEvent(self.uploadBtn , 'click' , self.uploadFile.bind(self));
                     } else {
@@ -175,6 +179,12 @@
         var fd = new FormData();
         for (var i = 0 ; i < this.fileFilter.length ; i++) {
             var file = this.fileFilter[i];
+            // 因为在上传图片到服务器之前，可以删除，这里的删除方式也是使用数组的splice方法。
+            // this.fileFilter.splice(index , 1 , null)，将需要删除的file对象设置为null，作为占位符，防止数组索引发生变化
+            // 当file为null时，跳过本次循环，进入下一个循环
+            if (!file) {
+                continue;
+            }
             (function (file) {
                 var xhr = new XMLHttpRequest();
                 if (xhr.upload) {
@@ -228,5 +238,12 @@
         this.uploadBtn.parentNode.removeChild(this.uploadBtn);
         this.fileFilter = [];
     };
+    Upload.prototype.removeFile = function (e) {
+        var target = e.target;
+        var arr = target.parentNode.getAttribute('id').split('-');
+        var index = parseInt(arr[arr.length - 1]);
+        this.fileFilter.splice(index , 1 , null);
+        target.parentNode.parentNode.removeChild(target.parentNode);
+    }
     root.Upload = Upload;
 })();
