@@ -37,7 +37,13 @@
             return new Upload(element , options);
         }
         var defaults = {
-            uploadMore : false
+            autoUpload : false,
+            previewBox : document.body,
+            width : 70,
+            height : 70,
+            size : 1024 * 1024 * 2,
+            onDragOver : function () {},
+            onDragLeave : function () {}
         };
         this.options = _.extend({} , defaults , options);
         this.target = element;
@@ -191,6 +197,7 @@
                                 self.options.complete.call(this);
                             }
                         } else {
+                            self.deleteFile(file);
                             self.options.fail.call(this , file , xhr.responseText);
                         }
                     }
