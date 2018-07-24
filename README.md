@@ -14,3 +14,4 @@
 - [全屏滚动组件(PC端)](https://github.com/andyChenAn/components/blob/master/components/fullpage)
 - [图片懒加载组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/lazyload)
 - [日期选择组件(PC)](https://github.com/andyChenAn/components/blob/master/components/datepicker)
+- [图片上传组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/upload)

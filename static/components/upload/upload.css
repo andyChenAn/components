@@ -38,7 +38,6 @@
     box-sizing: border-box;
     margin-top: 10px;
     padding: 10px 10px 10px 90px;
-    height: 92px;
     position: relative;
 }
 .upload-img {
@@ -46,6 +45,7 @@
 }
 .preview-box {
     width: 360px;
+    position: relative;
 }
 .upload-desc {
     display: block;
@@ -62,6 +62,10 @@
 .upload-filename {
     margin-bottom: 20px;
     display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
 }
 .upload-progress {
     display: none;
@@ -92,4 +96,10 @@
     border-radius: 5px;
     padding: 7px 12px;
     cursor: pointer;
+}
+.render-loading:after {
+    content: '加载中...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
 }

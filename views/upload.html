@@ -12,9 +12,7 @@
     <script src="public/components/upload/upload.js"></script>
 </head>
 <body>
-
 <h1 style="text-align: center;padding: 40px;">图片上传组件</h1>
-
 <div class="container">
     <!-- <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="upload" id="file" multiple>
@@ -23,39 +21,33 @@
     </form> -->
     <input type="file" name="upload" id="file" multiple>
     <span class="dropArea" id="dropZoom">可将图片拖到此处</span>
+    <!-- 存放预览图的容器 -->
     <div id="preview-box" class="preview-box"></div>
 </div>
 <script>
     var file = document.getElementById('file');
     var previewBox = document.getElementById('preview-box');
     var dropZoom = document.getElementById('dropZoom');
-    Upload(file , {
+    Upload([file , dropZoom] , {
         previewBox : previewBox,      // 存放预览图的容器
         autoUpload : false,           // 是否自动上传
         width : 70,       // 预览图的宽度
-        height : 70,       // 预览图的高度
-        size : 1024 * 1024 * 5,
+        height : 'auto',       // 预览图的高度
+        size : 1024 * 1024 * 20,    // 允许上传图片的大小
         onDragOver : function (dropDom) {
             console.log('dragover');
         },
         onDragLeave : function (dropDom) {
             console.log('dragleave');
         },
-        success : function () {},
-        fail : function () {},
-        complete : function () {},
-        progress : function () {}
-    });
-    Upload(dropZoom , {
-        previewBox : previewBox,      // 存放预览图的容器
-        autoUpload : false,           // 是否自动上传
-        width : 70,       // 预览图的宽度
-        height : 70,       // 预览图的高度
-        onDragOver : function () {
-            console.log('dragover');
+        success : function (file , result) {
+            console.log(file.name + '上传成功');
         },
-        onDragLeave : function () {
-            console.log('dragleave');
+        fail : function (file , err) {
+            console.log(file.name + '上传失败');
+        },
+        complete : function () {
+            console.log('所有图片都已经上传成功')
         }
     });
 </script>
