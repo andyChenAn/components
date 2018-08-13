@@ -35,6 +35,9 @@ app.get('/datepicker' , (req , res) => {
 app.get('/upload' , (req , res) => {
     res.render('./upload.html');
 });
+app.get('/dialog' , (req , res) => {
+    res.render('./dialog.html');
+});
 app.post('/upload' , (req , res) => {
     var form = new formidable.IncomingForm();
     // 临时存放图片文件目录
