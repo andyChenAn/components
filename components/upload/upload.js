@@ -122,16 +122,24 @@
     };
     Upload.prototype.addFileIndex = function (files) {
         for (var i = 0 ; i < files.length ; i++) {
-            files[i].index = i;
+            if (files[i]) {
+                files[i].index = i;
+            }
         };
     };
     Upload.prototype.onChange = function (files) {
+        // 因为删除图片的时候，使用了null来占位，所以当要展示预览图时，将所有为null的元素过滤掉
+        var newFiles = files.filter(function (file) {
+            if (file) {
+                return file;
+            }
+        });
         if (window.FileReader && typeof FileReader == 'function') {
             var html = '' ,  i = 0 , self = this , file;
             // 这里可以添加预览图渲染出来之前的loading效果
             //this.options.previewBox.classList.add('render-loading');
             var renderImage = function () {
-                file = files[i];
+                file = newFiles[i];
                 if (file) {
                     var reader = new FileReader();
                     reader.onload = function (e) {
