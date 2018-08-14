@@ -80,16 +80,16 @@
     border-bottom-left-radius: 10px;
 }
 .dialog-show .dialog-content {
-    animation: zoom-in 0.25s ease-in forwards;
-    -webkit-animation: zoom-in 0.25s ease-in forwards;
+    animation: zoom-in 0.2s ease-in forwards;
+    -webkit-animation: zoom-in 0.2s ease-in forwards;
 }
 .dialog-show .dialog-mask {
-    animation: fade-in 0.25s ease-in forwards;
-    -webkit-animation: fade-in 0.25s ease-in forwards;
+    animation: fade-in 0.2s ease-in forwards;
+    -webkit-animation: fade-in 0.2s ease-in forwards;
 }
 .dialog-hide .dialog-content , .dialog-hide .dialog-mask {
-    animation: fade-out 0.25s ease-in forwards;
-    -webkit-animation: fade-out 0.25s ease-in forwards;
+    animation: fade-out 0.2s ease-in forwards;
+    -webkit-animation: fade-out 0.2s ease-in forwards;
 }
 .dialog-close-btn {
     position: absolute;
