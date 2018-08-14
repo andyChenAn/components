@@ -16,16 +16,20 @@
 <div style="margin: 10px;">
     <button id="btn1" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
 </div>
-<div class="dialog" style="position: fixed;top: 0;left: 0;z-index: 10000;width: 100%;height: 100%;">
-    <div class="dialog-mask" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,.5);z-index: 100001;"></div>
+<!-- <div id="dialog" class="dialog dialog-show">
+    <div class="dialog-mask" id="dialog-mask"></div>
     <div class="dialog-content">
-        <div class="dialog-header">
-            
+        <div id="dialog-content-header" class="dialog-content-header">
+            我是标题
         </div>
-        <div class="dialog-body"></div>
-        <div class="dialog-footer"></div>
+        <div id="dialog-content-body" class="dialog-content-body">
+            我是一个弹框，我来自andy
+        </div>
+        <div id="dialog-content-footer" class="dialog-content-footer">
+            <button class="dialog-btn">确定</button>
+        </div>
     </div>
-</div>
+</div> -->
 <script>
     var btn1 = document.getElementById('btn1');
     Dialog(btn1 , {
