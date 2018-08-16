@@ -13,8 +13,177 @@
 <body>
 <h1 style="text-align: center;padding: 40px;">弹框组件</h1>
 <p style="font-size: 16px;margin: 10px;">alert弹框类型</p>
-<div style="margin: 10px;">
-    <button id="btn1" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">默认</p>
+        <button id="btn1" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn1 = document.getElementById('btn1');
+        Dialog(btn1 , {
+            content : '我是一个弹框，我来自andy'
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">自定义弹框标题</p>
+        <button id="btn2" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn2 = document.getElementById('btn2');
+        Dialog(btn2 , {
+            title : '这是一个标题',
+            content : '我是一个弹框，我来自andy'
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">无标题弹框</p>
+        <button id="btn3" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn3 = document.getElementById('btn3');
+        Dialog(btn3 , {
+            titleShow : false,
+            content : '我是一个弹框，我来自andy'
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">自动关闭弹框</p>
+        <button id="btn4" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn4 = document.getElementById('btn4');
+        Dialog(btn4 , {
+            title : '我是一个标题',
+            content : '我是一个弹框，我来自andy',
+            autoClose : 1000
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">点击遮罩层关闭弹框</p>
+        <button id="btn5" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn5 = document.getElementById('btn5');
+        Dialog(btn5 , {
+            title : '我是一个标题',
+            content : '我是一个弹框，我来自andy',
+            maskClose : true
+        });
+    </pre>
+</div>
+<p style="font-size: 16px;margin: 10px;">confirm弹框类型</p>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">默认</p>
+        <button id="btn6" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn6 = document.getElementById('btn6');
+        Dialog(btn6 , {
+            content : '我是一个弹框，我来自andy',
+            type : 'confirm'
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">自定义按钮文字</p>
+        <button id="btn7" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn7 = document.getElementById('btn7');
+        Dialog(btn7 , {
+            title : '发现新版本',
+            content : 'Android系统已经更新至9.0版本，是否更新！',
+            type : 'confirm',
+            buttonTextConfirm : '现在升级',
+            buttonTextCancel : '下次再说'
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">自定义按钮样式</p>
+        <button id="btn8" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn8 = document.getElementById('btn8');
+        Dialog(btn8 , {
+            title : '发现新版本',
+            content : 'Android系统已经更新至9.0版本，是否更新！',
+            type : 'confirm',
+            buttonClassConfirm : 'dialog-confirm',
+            buttonClassCancel : 'dialog-cancel'
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">点击按钮后的回调</p>
+        <button id="btn9" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn9 = document.getElementById('btn9');
+        Dialog(btn9 , {
+            title : '发现新版本',
+            content : 'Android系统已经更新至9.0版本，是否更新！',
+            type : 'confirm',
+            closeBtnShow : true,
+            onClickConfirmBtn : function (index , value) {
+                console.log(index , value);
+            },
+            onClickCancelBtn : function (index , value) {
+                console.log(index , value);
+            },
+            onClickCloseBtn : function () {
+                console.log('点击了关闭按钮');
+            }
+        });
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">弹框生命周期钩子</p>
+        <button id="btn10" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn10 = document.getElementById('btn10');
+        Dialog(btn10 , {
+            title : '发现新版本',
+            content : 'Android系统已经更新至9.0版本，是否更新！',
+            type : 'confirm',
+            closeBtnShow : true,
+            onClickConfirmBtn : function (index , value) {
+                console.log(index , value);
+            },
+            onClickCancelBtn : function (index , value) {
+                console.log(index , value);
+            },
+            onClickCloseBtn : function () {
+                console.log('点击了关闭按钮');
+            },
+            beforeShow : function () {
+                alert('弹框显示前');
+            },
+            show : function () {
+                alert('弹框显示后');
+            },
+            beforeClose : function () {
+                alert('弹框关闭前');
+            },
+            close : function () {
+                alert('弹框关闭后');
+            }
+        });
+    </pre>
 </div>
 <!-- <div id="dialog" class="dialog dialog-show">
     <div class="dialog-mask" id="dialog-mask"></div>
@@ -33,9 +202,94 @@
 <script>
     var btn1 = document.getElementById('btn1');
     Dialog(btn1 , {
-        title : '',
-        type : 'alert',
         content : '我是一个弹框，我来自andy'
+    });
+    var btn2 = document.getElementById('btn2');
+    Dialog(btn2 , {
+        title : '这是一个标题',
+        content : '我是一个弹框，我来自andy'
+    });
+    var btn3 = document.getElementById('btn3');
+    Dialog(btn3 , {
+        titleShow : false,
+        content : '我是一个弹框，我来自andy'
+    });
+    var btn4 = document.getElementById('btn4');
+    Dialog(btn4 , {
+        title : '我是一个标题',
+        content : '我是一个弹框，我来自andy',
+        autoClose : 1000
+    });
+    var btn5 = document.getElementById('btn5');
+    Dialog(btn5 , {
+        title : '我是一个标题',
+        content : '我是一个弹框，我来自andy',
+        maskClose : true
+    });
+    var btn6 = document.getElementById('btn6');
+    Dialog(btn6 , {
+        content : '我是一个弹框，我来自andy',
+        type : 'confirm'
+    });
+    var btn7 = document.getElementById('btn7');
+    Dialog(btn7 , {
+        title : '发现新版本',
+        content : 'Android系统已经更新至9.0版本，是否更新！',
+        type : 'confirm',
+        buttonTextConfirm : '现在升级',
+        buttonTextCancel : '下次再说'
+    });
+    var btn8 = document.getElementById('btn8');
+    Dialog(btn8 , {
+        title : '发现新版本',
+        content : 'Android系统已经更新至9.0版本，是否更新！',
+        type : 'confirm',
+        buttonClassConfirm : 'dialog-confirm',
+        buttonClassCancel : 'dialog-cancel'
+    });
+    var btn9 = document.getElementById('btn9');
+    Dialog(btn9 , {
+        title : '发现新版本',
+        content : 'Android系统已经更新至9.0版本，是否更新！',
+        type : 'confirm',
+        closeBtnShow : true,
+        onClickConfirmBtn : function (index , value) {
+            console.log(index , value);
+        },
+        onClickCancelBtn : function (index , value) {
+            console.log(index , value);
+        },
+        onClickCloseBtn : function () {
+            console.log('点击了关闭按钮');
+        }
+    });
+    var btn10 = document.getElementById('btn10');
+    Dialog(btn10 , {
+        title : '发现新版本',
+        content : 'Android系统已经更新至9.0版本，是否更新！',
+        type : 'confirm',
+        closeBtnShow : true,
+        onClickConfirmBtn : function (index , value) {
+            console.log(index , value);
+        },
+        onClickCancelBtn : function (index , value) {
+            console.log(index , value);
+        },
+        onClickCloseBtn : function () {
+            console.log('点击了关闭按钮');
+        },
+        beforeShow : function () {
+            alert('弹框显示前');
+        },
+        show : function () {
+            alert('弹框显示后');
+        },
+        beforeClose : function () {
+            alert('弹框关闭前');
+        },
+        close : function () {
+            alert('弹框关闭后');
+        }
     });
 </script>
 </body>

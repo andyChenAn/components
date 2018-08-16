@@ -124,6 +124,9 @@
     line-height: 24px;
     color: #999;
 }
+.dialog-confirm , .dialog-cancel {
+    color: #666;
+}
 @keyframes zoom-in {
     0% {
         transform: translate(-50% , -50%) scale(1.2 , 1.2);
