@@ -42,6 +42,9 @@
     color: #666;
     text-align: center;
     padding: 20px;
+    max-height: 480px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling : touch;
 }
 .dialog-content-footer {
     display: flex;
@@ -92,15 +95,11 @@
 .dialog-btn:last-child {
     border-bottom-right-radius: 10px;
 }
-.dialog-show .dialog-content {
-    animation: zoom-in 0.2s ease-in forwards;
-    -webkit-animation: zoom-in 0.2s ease-in forwards;
-}
 .dialog-show .dialog-mask {
     animation: fade-in 0.2s ease-in forwards;
     -webkit-animation: fade-in 0.2s ease-in forwards;
 }
-.dialog-hide .dialog-content , .dialog-hide .dialog-mask {
+.dialog-hide .dialog-mask {
     animation: fade-out 0.2s ease-in forwards;
     -webkit-animation: fade-out 0.2s ease-in forwards;
 }
@@ -126,6 +125,114 @@
 }
 .dialog-confirm , .dialog-cancel {
     color: #666;
+}
+[data-style=ios].dialog-show .dialog-content {
+    animation: zoom-in 0.2s ease-in forwards;
+    -webkit-animation: zoom-in 0.2s ease-in forwards;
+}
+[data-style=ios].dialog-hide .dialog-content {
+    animation: zoom-out 0.2s ease-in forwards;
+    -webkit-animation: zoom-out 0.2s ease-in forwards;
+}
+[data-style=android].dialog-show .dialog-content {
+    animation: bounce-in-down 0.2s ease-in forwards;
+    -webkit-animation: bounce-in-down 0.2s ease-in forwards;
+}
+[data-style=android].dialog-hide .dialog-content {
+    animation: bounce-in-up 0.2s ease-in forwards;
+    -webkit-animation: bounce-in-up 0.2s ease-in forwards;
+}
+[data-style=android] .dialog-content-footer {
+    display: block;
+    text-align: right;
+    padding: 10px;
+}
+[data-style=android] .dialog-content-footer .dialog-btn:after {
+    border: none;
+}
+[data-style=android] .dialog-content {
+    border-radius: 0px;
+}
+[data-style=android] .dialog-content-footer:after {
+    border: none;
+    height: 0;
+}
+[data-style=android] .dialog-content-footer .dialog-btn {
+    padding: 0 13px;
+    display: inline-block;
+}
+[data-style=android] .dialog-btn-cancel {
+    color: #666;
+}
+[data-style=android] .dialog-btn-confirm {
+    color : #00bbd3
+}
+[data-style=android] .dialog-content-header , [data-style=android] .dialog-content-body{
+    text-align: left;
+}
+@keyframes zoom-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@-webkit-keyframes zoom-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes bounce-in-up {
+    0% {
+        transform : translate(-50% , -50%);
+        -webkit-transform: translate(-50% , -50%);
+        opacity: 1;
+    }
+    100% {
+        transform : translate(-50% , -75%);
+        -webkit-transform: translate(-50% , -75%);
+        opacity: 0;
+    }
+}
+@-webkit-keyframes bounce-in-up {
+    0% {
+        transform : translate(-50% , -50%);
+        -webkit-transform: translate(-50% , -50%);
+        opacity: 1;
+    }
+    100% {
+        transform : translate(-50% , -75%);
+        -webkit-transform: translate(-50% , -75%);
+        opacity: 0;
+    }
+}
+@keyframes bounce-in-down {
+    0% {
+        transform : translate(-50% , -75%);
+        -webkit-transform: translate(-50% , -75%);
+        opacity: 0;
+    }
+    100% {
+        transform : translate(-50% , -50%);
+        -webkit-transform: translate(-50% , -50%);
+        opacity: 1;
+    }
+}
+@-webkit-keyframes bounce-in-down {
+    0% {
+        transform : translate(-50% , -75%);
+        -webkit-transform: translate(-50% , -75%);
+        opacity: 0;
+    }
+    100% {
+        transform : translate(-50% , -50%);
+        -webkit-transform: translate(-50% , -50%);
+        opacity: 1;
+    }
 }
 @keyframes zoom-in {
     0% {

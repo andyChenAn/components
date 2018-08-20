@@ -185,20 +185,55 @@
         });
     </pre>
 </div>
-<!-- <div id="dialog" class="dialog dialog-show">
-    <div class="dialog-mask" id="dialog-mask"></div>
-    <div class="dialog-content">
-        <div id="dialog-content-header" class="dialog-content-header">
-            我是标题
-        </div>
-        <div id="dialog-content-body" class="dialog-content-body">
-            我是一个弹框，我来自andy
-        </div>
-        <div id="dialog-content-footer" class="dialog-content-footer">
-            <button class="dialog-btn">确定</button>
-        </div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">按弹框风格弹框</p>
+        <button id="btn11" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
     </div>
-</div> -->
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn11 = document.getElementById('btn11');
+        Dialog(btn11 , {
+            title : '我是一个弹框',
+            content : '我是一个弹框，我来自andy',
+            style : 'default',
+            type : 'confirm'
+        })
+    </pre>
+</div>
+<div style="margin-bottom: 20px;">
+    <div style="margin: 10px;">
+        <p style="margin-bottom: 10px;">按弹框风格弹框</p>
+        <button id="btn12" style="border: none;outline: none;background-color: #ddd;padding: 4px 8px;">显示弹框</button>
+    </div>
+    <pre style="background-color: #eee;margin: 10px;padding: 10px;box-sizing: border-box;">
+        var btn12 = document.getElementById('btn12');
+        Dialog(btn12 , {
+            title : '我是一个弹框',
+            content : '我是一个弹框，我来自andy,我是一个弹框，我来自andy,我是一个弹框，我来自andy',
+            style : 'default',
+            buttons : [
+                {
+                    name : '不再提醒',
+                    callback : function (e) {
+                        console.log('不再提醒');
+                    }
+                },
+                {
+                    name : '下次再说',
+                    callback : function (e) {
+                        console.log('下次再说');
+                    }
+                },
+                {
+                    name : '现在升级',
+                    callback : function (e) {
+                        console.log('现在升级');
+                    }
+                }
+            ]
+        })
+    </pre>
+</div>
 <script>
     var btn1 = document.getElementById('btn1');
     Dialog(btn1 , {
@@ -291,6 +326,39 @@
             alert('弹框关闭后');
         }
     });
+    var btn11 = document.getElementById('btn11');
+    Dialog(btn11 , {
+        title : '我是一个弹框',
+        content : '我是一个弹框，我来自andy',
+        style : 'default',
+        type : 'confirm'
+    });
+    var btn12 = document.getElementById('btn12');
+    Dialog(btn12 , {
+        title : '我是一个弹框',
+        content : '我是一个弹框，我来自andy,我是一个弹框，我来自andy,我是一个弹框，我来自andy',
+        style : 'default',
+        buttons : [
+            {
+                name : '不再提醒',
+                callback : function (e) {
+                    console.log('不再提醒');
+                }
+            },
+            {
+                name : '下次再说',
+                callback : function (e) {
+                    console.log('下次再说');
+                }
+            },
+            {
+                name : '现在升级',
+                callback : function (e) {
+                    console.log('现在升级');
+                }
+            }
+        ]
+    })
 </script>
 </body>
 </html>
