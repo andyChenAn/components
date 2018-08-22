@@ -20,7 +20,7 @@
         var defaults = {
             className : 'ripple'
         };
-        options = options || 
+        options = options || {};
         this.element = element;
         this.settings = Object.assign({} , defaults , options);
         this.positionX = 0;
