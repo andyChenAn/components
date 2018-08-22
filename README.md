@@ -15,3 +15,4 @@
 - [图片懒加载组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/lazyload)
 - [日期选择组件(PC)](https://github.com/andyChenAn/components/blob/master/components/datepicker)
 - [图片上传组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/upload)
+- [弹框组件(移动端)](https://github.com/andyChenAn/components/blob/master/components/dialog)
