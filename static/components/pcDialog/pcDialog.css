@@ -1,0 +1,33 @@
+.dialog-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+    text-align: center;
+}
+.dialog-box:after {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 0;
+    vertical-align: middle;
+}
+.dialog-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    background: none\9;
+    background-color: #000;
+    background-color: rgba(0,0,0,.5);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+}
+.dialog-content-box {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #fff;
+}

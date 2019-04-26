@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PC版弹框组件</title>
+    <link rel="stylesheet" href="public/css/reset.css">
+    <link rel="stylesheet" href="public/css/font.css">
+    <link rel="stylesheet" href="public/components/pcDialog/pcDialog.css">
+    <script src="public/util/util.js"></script>
+    <script src="public/components/pcDialog/pcDialog.js"></script>
+</head>
+<body>
+<h1 style="text-align: center;padding: 40px;">PC版弹框组件</h1>
+<div style="margin: 40px;">
+    <button id="btn1" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button>
+</div>
+<!-- <div class="dialog-box">
+    <div class="dialog-content-box">
+        <div class="dialog-title">
+            <div>这是一个标题</div>
+            <button></button>
+        </div>
+        <div class="dialog-content">这是内容</div>
+        <div class="dialog-buttons">
+            
+        </div>
+    </div>
+</div>
+<div class="dialog-mask"></div> -->
+<script>
+var btn1 = document.getElementById('btn1');
+new Dialog(btn1 , {
+    title : '消息提示框',
+    content : '这是一个消息提示框',
+    showClose : true
+});
+
+
+</script>
+</body>
+</html>

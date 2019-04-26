@@ -41,6 +41,9 @@ app.get('/dialog' , (req , res) => {
 app.get('/ripple' , (req , res) => {
     res.render('./ripple.html');
 });
+app.get('/pcDialog' , (req , res) => {
+    res.render('./pcDialog.html');
+});
 app.post('/upload' , (req , res) => {
     var form = new formidable.IncomingForm();
     // 临时存放图片文件目录
