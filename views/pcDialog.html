@@ -8,34 +8,93 @@
     <link rel="stylesheet" href="public/css/reset.css">
     <link rel="stylesheet" href="public/css/font.css">
     <link rel="stylesheet" href="public/components/pcDialog/pcDialog.css">
+    <link rel="stylesheet" href="public/iconfont/iconfont.css">
     <script src="public/util/util.js"></script>
     <script src="public/components/pcDialog/pcDialog.js"></script>
+    <style>
+        .confirm-button-custom {
+            background-color: #007aff;
+            border-color: #007aff;
+            color: #fff;
+        }
+        .cancel-button-custom {
+            color: #666;
+        }
+        .confirm-button-custom:hover {
+            background-color: #47A1FC;
+            border-color: #47A1FC;
+        }
+        .confirm-button-custom:active {
+            opacity: 1;
+        }
+        .cancel-button-custom:hover {
+            color: #47A1FC;
+            border-color: #47A1FC;
+            background-color: #ecf5ff;
+        }
+        .send-button {
+            outline: none;
+            border: 1px solid #ddd;
+            display: inline-block;
+            line-height: 1;
+            padding: 9px 15px;
+            font-size: 14px;
+            background-color: #fff;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .cancel-send-button {
+            outline: none;
+            border: 1px solid #ddd;
+            display: inline-block;
+            line-height: 1;
+            padding: 9px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
 <h1 style="text-align: center;padding: 40px;">PC版弹框组件</h1>
 <div style="margin: 40px;">
     <button id="btn1" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button>
+    <!-- <button id="btn2" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button>
+    <button id="btn3" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button> -->
 </div>
-<!-- <div class="dialog-box">
-    <div class="dialog-content-box">
-        <div class="dialog-title">
-            <div>这是一个标题</div>
-            <button></button>
-        </div>
-        <div class="dialog-content">这是内容</div>
-        <div class="dialog-buttons">
-            
-        </div>
-    </div>
-</div>
-<div class="dialog-mask"></div> -->
 <script>
 var btn1 = document.getElementById('btn1');
 new Dialog(btn1 , {
     title : '消息提示框',
     content : '这是一个消息提示框',
-    showClose : true
+    showClose : true,
+    width : 600,
+    showCancelButton : true,
+    showConfirmButton : true,
+    confirmButtonClass : 'confirm-button-custom',
+    cancelButtonClass : 'cancel-button-custom',
+    closeBtn : '<span class="iconfont icon-guanbi"></span>',
+    buttons : [
+        {
+            text : '取消发送',
+            className : 'cancel-send-button',
+            callback : function () {
+                console.log('取消发送');
+            }
+        },
+        {
+            text : '发送',
+            className : 'send-button',
+            callback : function () {
+                console.log('发送');
+            }
+        }
+    ],
+    beforeDialogClose : function () {
+        console.log('关闭前')
+    }
 });
+
 
 
 </script>

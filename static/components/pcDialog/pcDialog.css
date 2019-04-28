@@ -30,4 +30,103 @@
     display: inline-block;
     vertical-align: middle;
     background-color: #fff;
+    position: relative;
+    border-radius: 4px;
+    padding-bottom: 10px;
+}
+.dialog-header {
+    padding: 20px 20px 10px;
+}
+.dialog-title {
+    font-size: 18px;
+    line-height: 24px;
+    text-align: left;
+    color: #303133;
+}
+.dialog-buttons {
+    padding: 10px 20px;
+    text-align: right;
+}
+.dialog-close-button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    position: absolute;
+    top: 24px;
+    right: 20px;
+    color: #999;
+    cursor: pointer;
+}
+.dialog-close-button:hover {
+    color: #007aff;
+}
+.cancel-button , .confirm-button {
+    outline: none;
+    border: 1px solid #1e283f;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1;
+    padding: 9px 15px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.1s;
+}
+.confirm-button {
+    margin-left: 10px;
+}
+.dialog-content {
+    padding: 10px 20px;
+    text-align: left;
+}
+.show-dialog {
+    animation: drop-down 0.2s ease-in-out;
+}
+@keyframes drop-down {
+    0% {
+        margin-top: -100px;
+        opacity : 0;
+    }
+    100% {
+        margin-top: 0px;
+        opacity : 1
+    }
+}
+.show-mask {
+    animation: fade-in 0.2s ease-in-out;
+}
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.hide-dialog {
+    animation: drop-up 0.2s ease-in-out;
+}
+@keyframes drop-up {
+    0% {
+        margin-top: 0;
+        opacity : 1;
+    }
+    100% {
+        margin-top: -100px;
+        opacity : 0
+    }
+}
+.hide-mask {
+    animation: fade-out 0.2s ease-in-out;
+}
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
