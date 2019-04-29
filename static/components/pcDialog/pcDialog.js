@@ -44,39 +44,55 @@
                         result.push(elements[i]);
                     }
                 }
-                
             }
         }
         return result;
     };
 
-    function animate(target , options , duration) {
-        var defaults = {};
-        var settings = _.extend({} , defaults , options);
+    function animate (target , options , duration) {
         var style = target.currentStyle || window.getComputedStyle(target , null);
-        var speed = 5;
-        var duration = duration;
-        var oldValue = parseInt(style.marginTop);
-        var newValue = options.marginTop;
-        var destination = Math.abs(newValue - oldValue);
+        var dest = {};
+        var old = {};
+        for (var key in options) {
+            dest[key] = parseFloat(options[key]) - parseFloat(style[key]);
+            old[key] = parseFloat(style[key]);
+        };
+        var start = new Date();
         var timer = null;
         function go () {
-            setTimeout(function () {
-                target.style.marginTop = -speed + parseInt(style.marginTop) + 'px';
-            } , 16);
-            
+            var p = (new Date() - start) / duration;
+            if (p >= 1) {
+                for (var key in dest) {
+                    if (key == 'opacity') {
+                        target.style[key] = old[key] + dest[key]
+                    }
+                    target.style[key] = old[key] + dest[key] + 'px';
+                };
+                clearTimeout(timer);
+                options.done && typeof options.done == 'function' && options.done();
+            } else {
+                for (var key in dest) {
+                    if (key == 'opacity') {
+                        target.style[key] = old[key] + dest[key] * p;
+                    }
+                    target.style[key] = old[key] + dest[key] * p + 'px';
+                }
+                timer = setTimeout(go , 16);
+            }
         }
         go();
-    };
+    } 
 
-    function Dialog (element , options) {
+    function Dialog (options) {
+        if (!(this instanceof Dialog)) {
+            return new Dialog(options);
+        }
         var defaults = {
             title : '',            // 弹框的标题
             content : '',          // 弹框的内容
-            width : 400,           // 弹框的宽度
+            width : 'auto',           // 弹框的宽度
             closeBtn : 'X',        // 关闭按钮，可以是图片，也可以是字体图标，默认就是一个简单的“X”
             showClose : true,       // 是否显示关闭右上角的关闭按钮
-            type : 'alert',         // 弹框的类型，type的值可以是"alert","comfirm","prompt","tips","loading"
             cancelButtonText : '取消',      // 取消按钮文字
             confirmButtonText : '确定',     // 确定按钮文字
             showCancelButton : false,       // 是否显示取消按钮
@@ -94,46 +110,12 @@
 
         };
         this.options = _.extend({} , defaults , options);
-        this.target = element;
         // 弹框是否已经显示
         this.isShow = false;
         this.init();
     };
     Dialog.prototype.init = function () {
-        var dialogContent = '<div class="dialog-box">'+
-                                '<div class="dialog-content-box" style="width:'+ this.options.width +'px">'+
-                                    '<div class="dialog-header">'+
-                                        '<div class="dialog-title">'+
-                                            '<span>' + this.options.title + '</span>'+
-                                        '</div>'+
-                                        '<button id="dialog-close-btn" class="dialog-close-button">'+ this.options.closeBtn +'</button>'+
-                                    '</div>'+
-                                    '<div class="dialog-content">' + this.options.content + '</div>'+
-                                    '<div id="dialog-buttons" class="dialog-buttons">'+
-                                        
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-        var dialogMask = '<div class="dialog-mask"></div>';
-        var dialogWrapper = document.createElement('div');
-        var maskWrapper = document.createElement('div');
-        maskWrapper.innerHTML = dialogMask;
-        dialogWrapper.innerHTML = dialogContent;
-        this.dialogDOM = dialogWrapper.firstChild;
-        this.maskDOM = maskWrapper.firstChild;
-        
-        this.dialogDOM.style.display = 'none';
-        document.body.appendChild(this.dialogDOM);
-
-        this.buttonsDOM = document.getElementById('dialog-buttons');
-        this.closeDOM = document.getElementById('dialog-close-btn');
-
-        // 通过options参数来计算最终要渲染的弹框
-        this.compute();
-
-        // 绑定事件
-        this.bindEvent();
-
+        this.render();
     };
 
     Dialog.prototype.compute = function () {
@@ -141,7 +123,11 @@
         if (!this.options.showClose) {
             this.closeDOM.parentNode.removeChild(this.closeDOM);
         };
-
+        // 是否需要title
+        if (!this.options.title) {
+            this.headerDOM.parentNode.removeChild(this.headerDOM);
+            this.dialogDOM.firstChild.style.paddingBottom = '0';
+        }
         // 是否显示按钮
         if (!this.options.noButtons) {
             // 是否显示取消按钮
@@ -179,50 +165,52 @@
 
     Dialog.prototype.bindEvent = function () {
         // 重新赋值，主要是方便解绑事件
-        this.handleTargetClick = this.handleTargetClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleButtonClick = this.handleButtonClick.bind(this);
         this.handleDialogAnimationend = this.handleDialogAnimationend.bind(this);
-
-        eventUtil.addEvent(this.target , 'click' , this.handleTargetClick);
         if (this.options.showClose) {
             eventUtil.addEvent(this.closeDOM , 'click' , this.handleDialogClose);
         };
-        
         // 给按钮绑定事件
         if (!this.options.noButtons) {
             eventUtil.addEvent(this.buttonsDOM , 'click' , this.handleButtonClick);
         }
-
         eventUtil.addEvent(this.dialogDOM.firstChild , 'animationend' , this.handleDialogAnimationend);
-        
     }
 
     Dialog.prototype.handleButtonClick = function (e) {
+        // 只有点击的是button才触发按钮点击事件，所以我们在添加自定义按钮的时候，一定要是button标签
         var target = e.target || window.event.srcElement;
-        var buttonText = target.innerText;
-        this.options.beforeDialogClose.call(this , this.options);
-        for (var i = 0 ; i < this.options.buttons.length ; i++) {
-            var newButtonText = this.options.buttons[i].text;
-            var callback = this.options.buttons[i].callback;
-            if (buttonText === newButtonText) {
-                callback.call(this , this.options);
-            }
-        };
-        this.handleDialogClose();
-    }
-
-    Dialog.prototype.handleTargetClick = function () {
-        this.render();
+        if (target.nodeName.toLowerCase() == 'button') {
+            var buttonText = target.innerText;
+            this.options.beforeDialogClose.call(this , this.options);
+            for (var i = 0 ; i < this.options.buttons.length ; i++) {
+                var newButtonText = this.options.buttons[i].text;
+                var callback = this.options.buttons[i].callback;
+                if (buttonText === newButtonText) {
+                    callback.call(this , this.options);
+                }
+            };
+            this.handleDialogClose();
+        }
     }
 
     Dialog.prototype.handleDialogClose = function () {
+        var self = this;
         if ('animation' in this.buttonsDOM.style) {
-            console.log('支持animation');
             this.dialogDOM.firstChild.setAttribute('class' , 'dialog-content-box hide-dialog');
             this.maskDOM.setAttribute('class' , 'dialog-mask hide-mask');
         } else {
-            console.log('不支持animation');
+            animate(this.dialogDOM.firstChild , {
+                marginTop : 0,
+                opacity : 0,
+                done : function () {
+                    self.handleDialogAnimationend();
+                }
+            } , 300);
+            animate(this.maskDOM , {
+                opacity : 0
+            } , 300);
         }
     }
 
@@ -234,31 +222,82 @@
         } else {
             this.isShow = false;
             this.unmount();
-            this.options.dialogClose && typeof this.options.dialogClose == 'function' && this.options.dialogClose.call(this , this.options);
         }
     }
 
     Dialog.prototype.render = function () {
+        var dialogContent = '<div class="dialog-box">'+
+                                '<div class="dialog-content-box" style="width:'+ this.options.width +'">'+
+                                    '<div id="dialog-header" class="dialog-header">'+
+                                        '<div class="dialog-title">'+
+                                            '<span>' + this.options.title + '</span>'+
+                                        '</div>'+
+                                        '<button id="dialog-close-btn" class="dialog-close-button">'+ this.options.closeBtn +'</button>'+
+                                    '</div>'+
+                                    '<div class="dialog-content">' + this.options.content + '</div>'+
+                                    '<div id="dialog-buttons" class="dialog-buttons">'+
+                                        
+                                    '</div>'+
+                                '</div>'+
+                            '</div>';
+        var dialogMask = '<div class="dialog-mask"></div>';
+        var dialogWrapper = document.createElement('div');
+        var maskWrapper = document.createElement('div');
+        maskWrapper.innerHTML = dialogMask;
+        dialogWrapper.innerHTML = dialogContent;
+        this.dialogDOM = dialogWrapper.firstChild;
+        this.maskDOM = maskWrapper.firstChild;
+
+        this.dialogDOM.style.display = 'none';
+        document.body.appendChild(this.dialogDOM);
+
+        this.buttonsDOM = document.getElementById('dialog-buttons');
+        this.closeDOM = document.getElementById('dialog-close-btn');
+        this.headerDOM = document.getElementById('dialog-header');
+        // 通过options参数来计算最终要渲染的弹框
+        this.compute();
+
+        // 绑定事件
+        this.bindEvent();
+        // 显示弹框
+        this.show();
+    };
+
+    Dialog.prototype.show = function () {
+        var self = this;
+        this.options.beforeDialogShow && typeof this.options.beforeDialogShow == 'function' && this.options.beforeDialogShow.call(this , this.options);
         this.dialogDOM.style.display = 'block';
         document.body.appendChild(this.maskDOM);
         // 是否支持transition过渡动画
         if ('animation' in this.buttonsDOM.style) {
-            console.log('支持animation');
             this.dialogDOM.firstChild.setAttribute('class' , 'dialog-content-box show-dialog');
             this.maskDOM.setAttribute('class' , 'dialog-mask show-mask');
         } else {
-            console.log('不支持animation');
+            // 如果不支持，那么我们就使用js来实现动画效果
+            // 首先将弹框和遮罩层的透明度设置为0
+            this.dialogDOM.firstChild.style.opacity = 0;
+            this.maskDOM.style.opacity = 0;
+            // 需要注意的是，我这里设置的两个元素的动画时长都是一样的，所以只需要在一个元素里调用handleDialogAnimationend方法
             animate(this.dialogDOM.firstChild , {
-                marginTop : -100
+                marginTop : 70,
+                opacity : 1,
+                done : function () {
+                    self.handleDialogAnimationend();
+                }
+            } , 300);
+            animate(this.maskDOM , {
+                opacity : 1
             } , 300)
         }
-    };
+    }
 
     Dialog.prototype.unmount = function () {
-        this.dialogDOM.style.display = 'none';
+        this.options.dialogClose && typeof this.options.dialogClose == 'function' && this.options.dialogClose.call(this , this.options);
+        eventUtil.removeEvent(this.closeDOM , 'click' , this.handleDialogClose);
+        eventUtil.removeEvent(this.buttonsDOM , 'click' , this.handleButtonClick);
+        eventUtil.removeEvent(this.dialogDOM.firstChild , 'animationend' , this.handleDialogAnimationend);
         document.body.removeChild(this.maskDOM);
-        this.dialogDOM.firstChild.setAttribute('class' , 'dialog-content-box');
-        this.maskDOM.setAttribute('class' , 'dialog-mask');
+        document.body.removeChild(this.dialogDOM);
     }
     root.Dialog = Dialog;
 })();

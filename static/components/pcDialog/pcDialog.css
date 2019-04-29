@@ -81,13 +81,14 @@
 .dialog-content {
     padding: 10px 20px;
     text-align: left;
+    color: #666;
 }
 .show-dialog {
     animation: drop-down 0.2s ease-in-out;
 }
 @keyframes drop-down {
     0% {
-        margin-top: -100px;
+        margin-top: -70px;
         opacity : 0;
     }
     100% {
@@ -115,7 +116,7 @@
         opacity : 1;
     }
     100% {
-        margin-top: -100px;
+        margin-top: -70px;
         opacity : 0
     }
 }

@@ -53,48 +53,170 @@
             cursor: pointer;
             background-color: #fff;
         }
+        .dialog-input {
+            padding: 0;
+            outline: none;
+            border: 1px solid #e4e4e4;
+            border-radius: 4px;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .dialog-input:focus {
+            border-color: #007aff;
+        }
+        .demo-button {
+            border: 1px solid #ccc;
+            background-color: transparent;
+            padding: 10px;
+            outline: none;
+            cursor: pointer;
+        }
+        .textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            box-sizing: border-box;
+            outline: none;
+            border: 1px solid #e4e4e4;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .submit {
+            outline: none;
+            border: 1px solid #007aff;
+            display: inline-block;
+            line-height: 1;
+            padding: 9px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #007aff;
+            color: #fff;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 <h1 style="text-align: center;padding: 40px;">PC版弹框组件</h1>
 <div style="margin: 40px;">
-    <button id="btn1" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button>
-    <!-- <button id="btn2" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button>
-    <button id="btn3" style="border: 1px solid #ccc;background-color: transparent;padding: 10px;outline: none;cursor: pointer;">消息提示框</button> -->
+    <button id="btn1" class="demo-button">消息提示框</button>
+    <button id="btn2" class="demo-button">消息确认框</button>
+    <button id="btn3" class="demo-button">自定义弹框</button>
+    <button id="btn4" class="demo-button">自定义按钮弹框</button>
+    <button id="btn5" class="demo-button">自定义弹框</button>
+    <button id="btn6" class="demo-button">没有标题的提示框</button>
 </div>
 <script>
 var btn1 = document.getElementById('btn1');
-new Dialog(btn1 , {
-    title : '消息提示框',
-    content : '这是一个消息提示框',
-    showClose : true,
-    width : 600,
-    showCancelButton : true,
-    showConfirmButton : true,
-    confirmButtonClass : 'confirm-button-custom',
-    cancelButtonClass : 'cancel-button-custom',
-    closeBtn : '<span class="iconfont icon-guanbi"></span>',
-    buttons : [
-        {
-            text : '取消发送',
-            className : 'cancel-send-button',
-            callback : function () {
-                console.log('取消发送');
-            }
-        },
-        {
-            text : '发送',
-            className : 'send-button',
-            callback : function () {
-                console.log('发送');
-            }
-        }
-    ],
-    beforeDialogClose : function () {
-        console.log('关闭前')
-    }
-});
+btn1.onclick = function () {
+    new Dialog({
+        title : '消息提示框',
+        content : '这是一个消息提示框',
+        type : 'alert',
+        showClose : true,
+        width : '600px',
+        confirmButtonClass : 'confirm-button-custom',
+        closeBtn : '<span class="iconfont icon-guanbi"></span>'
+    });
+}
 
+var btn2 = document.getElementById('btn2');
+btn2.onclick = function () {
+    new Dialog({
+        title : '消息确认框',
+        content : '是否需要删除该数据？',
+        showClose : true,
+        showConfirmButton : true,
+        showCancelButton : true,
+        width : '400px',
+        closeBtn : '<span class="iconfont icon-guanbi"></span>'
+    });
+};
+
+var btn3 = document.getElementById('btn3');
+btn3.onclick = function () {
+    Dialog({
+        title : '内容提交框',
+        content : '<input id="dialog-input" class="dialog-input" placeholder="请输入要提交的内容" />',
+        width : '500px',
+        showClose : true,
+        dialogShow : function () {
+            var input = document.getElementById('dialog-input');
+            input.focus();
+        }
+    });
+}
+
+var btn4 = document.getElementById('btn4');
+btn4.onclick = function () {
+    Dialog({
+        title : '自定义按钮弹框',
+        content : '这是一个自定义按钮弹框',
+        width : '500px',
+        buttons : [
+            {
+                text : '取消发送请求',
+                className : 'cancel-send-button',
+                callback : function () {
+                    alert('取消发送请求');
+                }
+            },
+            {
+                text : '发送请求',
+                className : 'send-button',
+                callback : function () {
+                    alert('发送请求');
+                }
+            },
+            {
+                text : '添加',
+                className : 'send-button',
+                callback : function () {
+                    alert('添加')
+                }
+            },
+            {
+                text : '删除',
+                className : 'send-button',
+                callback : function () {
+                    alert('删除')
+                }
+            }
+        ]
+    });
+}
+
+var btn5 = document.getElementById('btn5');
+btn5.onclick = function () {
+    Dialog({
+        title : '这是一个自定义弹框',
+        content : '<div>'+
+                    '<h2>可点评该公司的优秀、不足、建议等</h2>'+
+                    '<textarea class="textarea"></textarea>'+
+                    '<button class="submit">提交</button>'+
+                '</div>',
+        width : '500px',
+        noButtons : true,
+        closeBtn : '<span class="iconfont icon-guanbi"></span>'
+    })
+};
+
+var btn6 = document.getElementById('btn6');
+btn6.onclick = function () {
+    Dialog({
+        content : '这是一个简单的提示框',
+        noButtons : true,
+        width : 'auto',
+        showMask : false
+    });
+}
 
 
 </script>
