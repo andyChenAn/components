@@ -123,11 +123,6 @@
         if (!this.options.showClose) {
             this.closeDOM.parentNode.removeChild(this.closeDOM);
         };
-        // 是否需要title
-        if (!this.options.title) {
-            this.headerDOM.parentNode.removeChild(this.headerDOM);
-            this.dialogDOM.firstChild.style.paddingBottom = '0';
-        }
         // 是否显示按钮
         if (!this.options.noButtons) {
             // 是否显示取消按钮

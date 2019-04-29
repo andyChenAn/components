@@ -111,7 +111,6 @@
     <button id="btn3" class="demo-button">自定义弹框</button>
     <button id="btn4" class="demo-button">自定义按钮弹框</button>
     <button id="btn5" class="demo-button">自定义弹框</button>
-    <button id="btn6" class="demo-button">没有标题的提示框</button>
 </div>
 <script>
 var btn1 = document.getElementById('btn1');
@@ -207,16 +206,6 @@ btn5.onclick = function () {
         closeBtn : '<span class="iconfont icon-guanbi"></span>'
     })
 };
-
-var btn6 = document.getElementById('btn6');
-btn6.onclick = function () {
-    Dialog({
-        content : '这是一个简单的提示框',
-        noButtons : true,
-        width : 'auto',
-        showMask : false
-    });
-}
 
 
 </script>
