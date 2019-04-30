@@ -17,3 +17,4 @@
 - [图片上传组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/upload)
 - [弹框组件(移动端)](https://github.com/andyChenAn/components/blob/master/components/dialog)
 - [水波纹组件(PC+移动)](https://github.com/andyChenAn/components/blob/master/components/ripple)
+- [弹框组件(PC)](https://github.com/andyChenAn/components/blob/master/components/pcDialog)
