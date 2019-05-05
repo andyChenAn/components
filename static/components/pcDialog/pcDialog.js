@@ -63,25 +63,30 @@
             var p = (new Date() - start) / duration;
             if (p >= 1) {
                 for (var key in dest) {
-                    if (key == 'opacity') {
-                        target.style[key] = old[key] + dest[key]
+                    if (key !== 'done') {
+                        if (key == 'opacity') {
+                            target.style[key] = old[key] + dest[key]
+                        }
+                        target.style[key] = old[key] + dest[key] + 'px';
                     }
-                    target.style[key] = old[key] + dest[key] + 'px';
                 };
                 clearTimeout(timer);
                 options.done && typeof options.done == 'function' && options.done();
+                return;
             } else {
                 for (var key in dest) {
-                    if (key == 'opacity') {
-                        target.style[key] = old[key] + dest[key] * p;
+                    if (key !== 'done') {
+                        if (key == 'opacity') {
+                            target.style[key] = old[key] + dest[key] * p;
+                        }
+                        target.style[key] = old[key] + dest[key] * p + 'px';
                     }
-                    target.style[key] = old[key] + dest[key] * p + 'px';
                 }
                 timer = setTimeout(go , 16);
             }
         }
         go();
-    } 
+    };
 
     function Dialog (options) {
         if (!(this instanceof Dialog)) {
@@ -281,7 +286,7 @@
                 }
             } , 300);
             animate(this.maskDOM , {
-                opacity : 1
+                opacity : 0.5
             } , 300)
         }
     }

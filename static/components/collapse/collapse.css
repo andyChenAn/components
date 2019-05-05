@@ -1,3 +1,6 @@
 .open-collapse {
     transition: height 0.3s ease-in-out;
 }
+.close-collapse {
+    transition: height 0.3s ease-in-out;
+}

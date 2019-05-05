@@ -22,8 +22,8 @@
     height: 100%;
     z-index: 9;
     background: none\9;
+    opacity: 0.5;
     background-color: #000;
-    background-color: rgba(0,0,0,.5);
     filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
 }
 .dialog-content-box {
@@ -104,7 +104,7 @@
         opacity: 0;
     }
     100% {
-        opacity: 1;
+        opacity: 0.5;
     }
 }
 .hide-dialog {
@@ -125,7 +125,7 @@
 }
 @keyframes fade-out {
     0% {
-        opacity: 1;
+        opacity: 0.5;
     }
     100% {
         opacity: 0;
